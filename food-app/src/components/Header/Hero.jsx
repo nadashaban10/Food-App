@@ -11,10 +11,10 @@ const Hero = () => {
 
   return (
     <>
-      <div className="w-full overflow-x-hidden mx-auto relative">
+      <div className="w-full mx-auto relative">
         <div className="h-screen bg-cover bg-center bg-fixed bg-[url(http://localhost:5173/images/hero-cover.jpg)]">
           {/* Black overlay */}
-          <div className="absolute inset-0 bg-black opacity-50 z-10"></div>
+          <div className="absolute inset-0 bg-black opacity-70 z-10"></div>
           {/* ========= navbar ============= */}
           <div className="wrapper w-[80%] mx-auto p-5 relative z-100">
             <nav className="w-full flex items-center justify-between relative">
@@ -69,13 +69,12 @@ const Hero = () => {
                     </li>
                   </ul>
                 </div>
-                <div className="ml-4">
+                <div className="ml-4 ">
                   <Link to="/">
                     <img
                       src="http://localhost:5173/images/logo.png"
                       alt="logo"
-                      style={{ width: "220px" }}
-                      className="mr-0"
+                      className="mr-0 w-[200px] h-auto object-contain"
                     />
                   </Link>
                 </div>

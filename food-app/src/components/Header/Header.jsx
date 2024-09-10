@@ -1,7 +1,7 @@
 const Header = () => {
   return (
-    <div className="text-3xl w-[70%] text-white text-right flex justify-end flex-col gap-14 mt-[100px] ">
-      <h1 className="text-6xl font-extrabold leading-[80px] ">
+    <div className="text-3xl lg:w-[70%] sm:w-full sm:text-center text-white md:text-right flex justify-end flex-col gap-14 mt-[100px] ">
+      <h1 className="md:text-6xl sm:text-4xl font-extrabold leading-[80px] ">
         استمتع بأشهى المشويات الطازجة على أصولها
       </h1>
       <p className="leading-[50px]">
