@@ -24,7 +24,7 @@ const Hero = () => {
 
           {/* ========= Menu when pressing the burger icon =========== */}
           <div
-            className={`fixed top-0 left-0 h-screen w-[300px] sm:w-[400px] bg-white bg-opacity-85 z-[110] transition-transform duration-500 ${
+            className={`fixed top-0 left-0 h-screen w-[250px] sm:w-[400px] bg-white z-[110] transition-transform duration-500 ${
               showSideBar ? "translate-x-0" : "-translate-x-full"
             }`}
           >

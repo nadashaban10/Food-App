@@ -3,8 +3,8 @@ import { FaMapMarkerAlt, FaPhoneAlt, FaEnvelope, FaGlobe } from 'react-icons/fa'
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-900 text-white py-10 border-t-2 border-[#be0002] w-full mt-6 rtl:text-right">
-      <div className="max-w-6xl mx-auto px-4">
+    <footer className="bg-gray-900 text-white py-10 border-t-2 border-[#be0002] w-full mt-6 rtl:text-right" dir="rtl">
+      <div className="max-w-6xl mx-auto px-4 sm:px-8">
         <div className="flex flex-col md:flex-row justify-between mb-8 space-y-6 md:space-y-0">
           {/* Open Hours */}
           <div className="flex-1">
@@ -24,15 +24,15 @@ const Footer = () => {
               الموقع
             </h4>
             <div className="flex items-center space-x-2 rtl:space-x-reverse">
-              <FaMapMarkerAlt className="text-[#be0002] text-2xl" />
               <a
                 href="https://www.google.com/maps"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-white hover:text-[#be0002] transition-colors duration-300 text-lg font-medium"
               >
-                 مثال شارع، مدينة، بلد
+                مثال شارع، مدينة، بلد
               </a>
+              <FaMapMarkerAlt className="text-[#be0002] text-2xl" />
             </div>
           </div>
 
