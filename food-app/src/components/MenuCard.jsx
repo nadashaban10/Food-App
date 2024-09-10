@@ -1,72 +1,61 @@
-import React from 'react';
+import React, { useState } from 'react';
+import img from '/images/images.jpg';
 
-const MenuCard = () => {
-  return <div class="Menu-container">
-        
-  <div class="Menu-card">
-      <img src="./images/menu1.jpg" ></img>
-      <h3 class="Menu-title">Burger and Fries</h3>
-      <p class="Menu-description">Beef Burgere With Delicious Fries</p>
-      <h6 class="Menu-price">$150.99</h6>
-      <ul class="Menu-rating">
-          <li class="stars"><i class="fa fa-star checked"></i></li>
-          <li class="stars"><i class="fa fa-star checked"></i></li>
-          <li class="stars"><i class="fa fa-star checked"></i></li>
-          <li class="stars"><i class="fa fa-star checked"></i></li>
-          <li class="stars"><i class="fa fa-star checked"></i></li>
-      </ul>
-      <button class="add-to-cart-btn">Add to Cart</button>
-  </div>  
+const imageCard = img;
 
+function MenuCard({ handleClickCart }) {
+  const [number, setNumber] = useState(0);
+  const [color, setColor] = useState('black');
+  const [clicked, setClicked] = useState(false);
 
-  <div class="Menu-card">
-      <img src="./images/menu2.jpg" ></img>
-      <h3 class="Menu-title">Chicken Fries</h3>
-      <p class="Menu-description">Delicious Checken Fries</p>
-      <h6 class="Menu-price">$200</h6>
-      <ul class="Menu-rating">
-          <li class="stars"><i class="fa fa-star checked"></i></li>
-          <li class="stars"><i class="fa fa-star checked"></i></li>
-          <li class="stars"><i class="fa fa-star checked"></i></li>
-          <li class="stars"><i class="fa fa-star "></i></li>
-          <li class="stars"><i class="fa fa-star "></i></li>
-      </ul>
-      <button class="add-to-cart-btn">Add to Cart</button>
-  </div>    
-  
-  <div class="Menu-card">
-      <img src="./images/menu3.jpg" ></img>
-      <h3 class="Menu-title">Pancake</h3>
-      <p class="Menu-description">Choclate Pancake</p>
-      <h6 class="Menu-price">$50</h6>
-      <ul class="Menu-rating">
-          <li class="stars"><i class="fa fa-star checked"></i></li>
-          <li class="stars"><i class="fa fa-star checked"></i></li>
-          <li class="stars"><i class="fa fa-star checked"></i></li>
-          <li class="stars"><i class="fa fa-star checked"></i></li>
-          <li class="stars"><i class="fa fa-star "></i></li>
-      </ul>
-      <button class="add-to-cart-btn">Add to Cart</button>
-  </div>    
+  const handleIncrement = () => {
+    setNumber(number + 1);
+    setColor('#dc3545');
+    setClicked(true);
+  };
 
-  <div class="Menu-card">
-      <img src="./images/menu4.jpg" ></img>
-      <h3 class="Menu-title">Big Italian Salad</h3>
-      <p class="Menu-description">Delicious Big Italian Salad</p>
-      <h6 class="Menu-price">$90</h6>
-      <ul class="Menu-rating">
-          <li class="stars"><i class="fa fa-star checked"></i></li>
-          <li class="stars"><i class="fa fa-star checked"></i></li>
-          <li class="stars"><i class="fa fa-star checked"></i></li>
-          <li class="stars"><i class="fa fa-star checked"></i></li>
-          <li class="stars"><i class="fa fa-star checked"></i></li>
-      </ul>
-      <button class="add-to-cart-btn">Add to Cart</button>
-  </div>    
+  const handleDecrement = () => {
+    if (number > 0) {
+      setNumber(number - 1);
+      setClicked(true);
+      if (number - 1 === 0) {
+        setColor('black');
+      }
+    }
+  };
 
-
-</div>
-;
-};
+  return (
+    
+    <div className='card h-[350px] w-[90%] sm:w-[300px] md:w-[250px] lg:w-[300px] bg-white rounded-xl'>
+       
+      <div className='card-image'>
+        <img src={imageCard} className='w-full rounded-t-xl' alt='Card Image' /> 
+      </div>
+      <div className='card-content flex flex-col justify-start m-2 pr-2' dir='rtl'>
+        <div className='flex justify-between'>
+          <div className='flex bg-white'>
+            <button 
+              className={`btn w-[44px] text-white rounded-3xl pt-1 m-1 flex items-center justify-center`} 
+              style={{ backgroundColor: color }}
+              onClick={handleIncrement}
+            >
+              + {clicked && number > 0 ? number : ''}
+            </button>
+            <button 
+              className='btn border border-red-600 w-[40px] text-red-500 rounded-3xl pt-1 m-1 flex items-center justify-center' 
+              onClick={handleDecrement}
+            >
+              - {clicked && number > 0 }
+            </button>
+          </div>
+          <span className='card-price mt-4 font-bold ml-3 pb-1 text-red-700'>200.00 Egp</span>
+        </div>
+        <span className='line w-[97%] h-[1px] bg-gray-200 my-2'></span>
+        <span className='card-title font-bold'>كفته مشويه</span>
+        <p className='text-gray-500'>الوصف : لحم مشوي لذيذ مع توابل خاصة</p>
+      </div>
+    </div>
+  );
+}
 
 export default MenuCard;
