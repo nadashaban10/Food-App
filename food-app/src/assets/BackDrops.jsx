@@ -2,7 +2,7 @@ const BackDrops = () => {
   const style = {
     width: "100%",
     height: "100%",
-    backgroundColor: "rgba(0,0,0,0.5)",
+    backgroundColor: "rgba(0,0,0,0.7)",
     zIndex: "90",
     position: "fixed",
     top: "0",
