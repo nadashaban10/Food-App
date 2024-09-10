@@ -32,7 +32,7 @@ const Menu = () => {
         <div className="relative">
           <img src={imageHeader} alt="food" className="w-full h-[300px] mb-[50px] object-cover" />
           <div className="absolute top-0 left-0 w-full h-[300px] bg-black opacity-50"></div>
-          <div className="top-0 right-0 flex justify-end items-start gap-5 p-5 fixed cursor-pointer">
+          <div className="top-0 right-0 flex flex-col sm:flex-row  justify-end items-start gap-5 p-1 sm:p-5 fixed cursor-pointer ">
             {/* Wishlist */}
             <div className="flex relative justify-center items-center cursor-pointer rounded-full w-[50px] h-[50px] bg-[rgb(190,0,2)] text-white hover:bg-[#be00037b]">
               <span className="text-2xl">
@@ -58,12 +58,12 @@ const Menu = () => {
           </div>
         </div>
 
-        <div className="category-sec flex justify-center items-center h-[150px] w-[100%] left-0 mt-[100px]">
-          <div className="flex justify-center font-bold items-center">
+        <div className="category-sec flex justify-center items-center h-[150px] w-[100%] left-0 mt-[100px] ">
+          <div className="flex flex-wrap justify-center font-bold items-center sm:flex-col md:flex-row">
             {categories.map((category, index) => (
               <button
                 key={index}
-                className={`btn bg-white border border-white rounded-2xl p-2 m-2 ${selectedButton === index ? 'bg-[rgb(190,0,3)] text-white  transform scale-110 p-3' : ' text-black'}`}
+                className={`btn  border  border-white rounded-2xl p-2 m-2 ${selectedButton === index ? 'bg-[#be0002] text-white transform scale-110 p-3' : 'bg-white  text-black'}`}
                 onClick={() => handleClick(index)}
               >
                 {category}
@@ -72,7 +72,7 @@ const Menu = () => {
           </div>
         </div>
 
-        <h1 className="text-2xl text-center font-bold mt-[100px] mb-[40px]">اطلب الأن</h1>
+        {/* <h1 className="text-2xl text-center font-bold mt-[100px] mb-[40px]">اطلب الأن</h1> */}
 
         <div id="cards-section" className="flex justify-center h-auto w-[100%] pl-5 bg-gray-100 mt-4">
           <div className="grid w-[80%] sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-3 gap-y-4">

@@ -5,7 +5,7 @@ import { TbMenu2 } from "react-icons/tb";
 import { useState } from "react";
 
 const NavBar = ({ setShowSideBar, showSideBar }) => {
-  const { pathname } = useLocation();
+  const { pathname } = useLocation(); 
 
   return (
     <nav className="w-full flex items-center lg:justify-between relative">
@@ -76,7 +76,7 @@ const NavBar = ({ setShowSideBar, showSideBar }) => {
             <img
               src="http://localhost:5173/images/logo.png"
               alt="logo"
-              className="mr-0 w-[200px] h-auto object-contain"
+              className="mr-0 w-[150px] h-auto object-contain mb-5"
             />
           </Link>
         </div>
