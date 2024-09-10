@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.rtl {
+  direction: rtl;
+}
+
 /* ============ custom css ============== */
 .custom-black-overlay {
   position: absolute;
