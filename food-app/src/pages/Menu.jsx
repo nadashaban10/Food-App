@@ -34,26 +34,26 @@ const Menu = () => {
           <div className="absolute top-0 left-0 w-full h-[300px] bg-black opacity-50"></div>
           <div className="top-0 right-0 flex justify-end items-start gap-5 p-5 fixed cursor-pointer">
             {/* Wishlist */}
-            <div className="flex relative justify-center items-center cursor-pointer rounded-full w-[50px] h-[50px] bg-[#be0002] text-white hover:bg-[#be00037b]">
+            <div className="flex relative justify-center items-center cursor-pointer rounded-full w-[50px] h-[50px] bg-[rgb(190,0,2)] text-white hover:bg-[#be00037b]">
               <span className="text-2xl">
                 <FaRegHeart />
-                <span className="absolute top-0 right-0 text-[15px] font-bold bg-white pt-1 text-[#be0002] rounded-full w-[20px] h-[20px] flex justify-center items-center">0</span>
+                <span className="absolute top-0 right-0 text-[15px] font-bold bg-white pt-1 text-[rgb(190,0,2)] rounded-full w-[20px] h-[20px] flex justify-center items-center">0</span>
               </span>
             </div>
             {/* Shopping Cart */}
             <div className="flex relative justify-center items-center rounded-full w-[50px] h-[50px] bg-[#be0002] text-white hover:bg-[#be00037b]">
               <span className="text-2xl">
                 <Link> <FiShoppingCart /> </Link>
-                <span className="absolute top-0 right-0 text-[15px] font-bold bg-white pt-1 text-[#be0002] rounded-full w-[20px] h-[20px] flex justify-center items-center">{AddToCartItems}</span>
+                <span className="absolute top-0 right-0 text-[15px] font-bold bg-white pt-1 text-[rgb(190,0,2)] rounded-full w-[20px] h-[20px] flex justify-center items-center">{AddToCartItems}</span>
               </span>
             </div>
           </div>
           <div className="absolute top-0 left-0 w-[100%] h-full flex justify-center items-center">
             <Link to="#" onClick={scrollingToCard}>
-              <h1 className="text-2xl text-[#be0002] font-bold p-2">المنيو</h1>
+              <h1 className="text-2xl text-[rgb(190,0,2)] font-bold p-2">المنيو</h1>
             </Link>
             <Link to="/">
-              <h1 className="text-2xl hover:text-[#be0002] hover:font-bold text-white font-bold"> / الصفحة الرئيسية</h1>
+              <h1 className="text-2xl hover:text-[rgb(190,0,2)]hover:font-bold text-white font-bold"> / الصفحة الرئيسية</h1>
             </Link>
           </div>
         </div>
@@ -63,7 +63,7 @@ const Menu = () => {
             {categories.map((category, index) => (
               <button
                 key={index}
-                className={`btn bg-white border border-white rounded-2xl p-2 m-2 ${selectedButton === index ? 'bg-[rgb(190,0,2)] text-white border  transform scale-110 p-3' : ' text-black'}`}
+                className={`btn bg-white border border-white rounded-2xl p-2 m-2 ${selectedButton === index ? 'bg-[rgb(190,0,3)] text-white  transform scale-110 p-3' : ' text-black'}`}
                 onClick={() => handleClick(index)}
               >
                 {category}
