@@ -19,22 +19,22 @@ function Categories() {
   ]);
 
   return (
-    <div className="w-[80%] mx-auto">
+    <div className="w-[87%] mx-auto">
       <h1 className="text-3xl font-bold m-5 text-center">الاصناف</h1>
-      <div className="grid grid-cols-1 cursor-pointer sm:grid-cols-2 md:grid-cols-4 gap-8 w-[95%] mx-auto my-5">
+      <div className="grid grid-cols-1 cursor-pointer sm:grid-cols-2 md:grid-cols-4 gap-8  ">
         {categories.map((category) => (
           <div
             key={category.name}
-            className="p-4 bg-white w-full  hover:shadow-lg transition duration-300 ease-in-out h-75 flex flex-col items-center justify-between"
+            className="mb-5 bg-white w-full  hover:shadow-lg transition duration-300 ease-in-out  flex flex-col items-center justify-between"
           >
-            <div className="overflow-hidden w-full h-40">
+            <div className="overflow-hidden w-[100%] h-[200px]">
               <img
                 src={category.image}
                 alt={category.name}
-                className="w-full h-full object-cover transform transition duration-300 ease-in-out hover:scale-110"
+                className="w-full h-full object-cover "
               />
             </div>
-            <h3 className="text-lg font-bold mt-2">{category.name}</h3>
+            {/* <h3 className="text-lg font-bold mt-2">{category.name}</h3> */}
           </div>
         ))}
       </div>

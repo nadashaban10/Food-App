@@ -32,7 +32,7 @@ const Menu = () => {
         <div className="relative">
           <img src={imageHeader} alt="food" className="w-full h-[300px] mb-[50px] object-cover" />
           <div className="absolute top-0 left-0 w-full h-[300px] bg-black opacity-50"></div>
-          <div className="top-0 right-0 flex flex-col sm:flex-row  justify-end items-start gap-5 p-1 sm:p-5 fixed cursor-pointer ">
+          <div className="top-0 left-0 flex flex-col sm:flex-row  justify-end items-start gap-5 p-1 sm:p-5 fixed cursor-pointer ">
             {/* Wishlist */}
             <div className="flex relative justify-center items-center cursor-pointer rounded-full w-[50px] h-[50px] bg-[rgb(190,0,2)] text-white hover:bg-[#be00037b]">
               <span className="text-2xl">
@@ -48,12 +48,14 @@ const Menu = () => {
               </span>
             </div>
           </div>
+          <h1 className=" absolute top-0   mt-[50px] left-0 w-[100%] h-full flex justify-center items-start text-white text-[60px]">اطلب الان</h1>
           <div className="absolute top-0 left-0 w-[100%] h-full flex justify-center items-center">
+
             <Link to="#" onClick={scrollingToCard}>
-              <h1 className="text-2xl text-[rgb(190,0,2)] font-bold p-2">المنيو</h1>
+              <h1 className="text-xl text-[rgb(190,0,2)] font-bold p-2">المنيو</h1>
             </Link>
             <Link to="/">
-              <h1 className="text-2xl hover:text-[rgb(190,0,2)]hover:font-bold text-white font-bold"> / الصفحة الرئيسية</h1>
+              <h1 className="text-xl  cursor-pointer hover:text-[rgb(190,0,2)]hover:font-bold text-white font-bold"> / الصفحة الرئيسية</h1>
             </Link>
           </div>
         </div>
