@@ -12,6 +12,31 @@ router.get('/', async (req, res) => {
     }
 });
 
+
+// Get all food items with optional search by name and description
+router.get('/search', async (req, res) => {
+    try {
+        
+        const { name, description } = req.query;
+
+        let query = {};
+
+        if (name) {
+            query.name = new RegExp(name, 'i'); 
+        }
+
+        if (description) {
+            query.description = new RegExp(description, 'i'); 
+        }
+
+        
+        const MenuItems = await MenuItem.find(query).populate('category');
+        res.json(MenuItems);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
 // Get a food item by ID
 router.get('/:id', async (req, res) => {
     try {
