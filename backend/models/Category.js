@@ -11,6 +11,14 @@ const categorySchema = new Schema({
         type: String,
         required: false,
     },
+    imageUrl: {
+        type: String,  // Single image URL
+      },
+      imageUrls: [
+        {
+          type: String,  // Array of multiple image URLs
+        }
+      ]
 });
 
 module.exports = mongoose.model('Category', categorySchema);
