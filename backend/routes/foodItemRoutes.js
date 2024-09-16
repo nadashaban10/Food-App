@@ -15,9 +15,9 @@ router.get('/', async (req, res) => {
 // Get a food item by ID
 router.get('/:id', async (req, res) => {
     try {
-        const MenuItem = await MenuItem.findById(req.params.id).populate('category');
-        if (!MenuItem) return res.status(404).json({ message: 'Menu item not found' });
-        res.json(MenuItem);
+        const MenuItems = await MenuItem.findById(req.params.id).populate('category');
+        if (!MenuItems) return res.status(404).json({ message: 'Menu item not found' });
+        res.json(MenuItems);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -25,9 +25,9 @@ router.get('/:id', async (req, res) => {
 
 // Create a new food item
 router.post('/', async (req, res) => {
-    const MenuItem = new MenuItem(req.body);
+    const MenuItems = new MenuItem(req.body);
     try {
-        const newMenuItem = await MenuItem.save();
+        const newMenuItem = await MenuItems.save();
         res.status(201).json(newMenuItem);
     } catch (error) {
         res.status(400).json({ message: error.message });
