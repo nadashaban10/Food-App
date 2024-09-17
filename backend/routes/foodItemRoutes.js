@@ -37,6 +37,24 @@ router.get('/search', async (req, res) => {
     }
 });
 
+
+// Get food items by category ID
+router.get('/category/:categoryId', async (req, res, next) => {
+    try {
+        const { categoryId } = req.params;
+        const menuItems = await MenuItem.find({ category: categoryId }).populate('category');
+
+        if (menuItems.length === 0) {
+            return res.status(404).json({ message: 'No menu items found for this category' });
+        }
+
+        res.json(menuItems);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+
 // Get a food item by ID
 router.get('/:id', async (req, res) => {
     try {
