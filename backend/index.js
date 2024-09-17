@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const app = express();
+const path = require('path');
 const cors = require('cors');
 
 
@@ -21,7 +22,9 @@ mongoose.connect(process.env.MONGODB_URL)
 // Middleware
 app.use(bodyParser.json());
 app.use(morgan('tiny')); // Log requests
-app.use(cors())
+app.use(cors());
+app.use('/public', express.static(path.join(__dirname, 'public'))); // Serve static files
+
 
 // Routes
 const userRoutes = require('./routes/userRoutes');
@@ -31,6 +34,7 @@ const cartRoutes = require('./routes/cartRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
 const wishlistRoutes = require('./routes/wishlistRoutes');
 const orderRoutes = require('./routes/orderRoutes');
+const imageRoutes = require('./routes/uploadRoutes');
 
 app.use('/api/users', userRoutes);
 app.use('/api/categories', categoryRoutes);
@@ -39,6 +43,7 @@ app.use('/api/carts', cartRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/wishlists', wishlistRoutes);
 app.use('/api/orders', orderRoutes);
+app.use('/api/uploads', imageRoutes);
 
 // Error handling
 app.use((req, res, next) => {

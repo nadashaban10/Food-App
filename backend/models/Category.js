@@ -11,7 +11,7 @@ const categorySchema = new Schema({
         type: String,
         required: false,
     },
-    imageUrl: {
+    image: {
         type: String,  // Single image URL
       },
       imageUrls: [
