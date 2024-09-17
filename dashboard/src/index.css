@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==================== Global Rules ==================== */
+
+:root {
+  --hover-color: #ff2d2d;
+}
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  list-style: none;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+* {
+  font-family: "Poppins", sans-serif;
+  /* font-family: "Roboto", sans-serif; */
+  /* font-family: "Playfair Display", serif; */
+}
+
+.custom-hover-effect {
+  transition: transform 0.4s ease-in-out;
+}
+
+.custom-hover-effect:hover {
+  transform: scale(0.95);
+  color: var(--hover-color);
+}
+
+.active {
+  color: var(--hover-color);
+  background-color: rgb(100 116 139 / 0.3);
+}
