@@ -10,7 +10,7 @@ const JWT_SECRET = process.env.JWT_SECRET ;
 // Register a new user
 router.post('/register', async (req, res) => {
     try {
-        const { username, email, password } = req.body;
+        const { name, email, password, address, phone } = req.body;
 
         // Check if the user already exists
         const existingUser = await User.findOne({ email });
@@ -22,11 +22,11 @@ router.post('/register', async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         // Create a new user
-        const user = new User({ username, email, password: hashedPassword });
+        const user = new User({ name, email, address, phone, password: hashedPassword });
         const newUser = await user.save();
 
         // Return the new user (excluding the password in the response)
-        res.status(201).json({ username: newUser.username, email: newUser.email, id: newUser._id });
+        res.status(201).json({ name: newUser.username, email: newUser.email, id: newUser._id, address:newUser.address, phone:newUser.phone });
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
