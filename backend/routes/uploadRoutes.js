@@ -8,7 +8,7 @@ const router = express.Router();
 // Configure Multer for image uploads
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        const uploadPath = path.join(__dirname, '..', '..', 'food-app', 'public', 'images');
+        const uploadPath = path.join(__dirname, '..', '..', 'food-app/public', 'images');
 
         // Create the directory if it doesn't exist
         if (!fs.existsSync(uploadPath)) {
