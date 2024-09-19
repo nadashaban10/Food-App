@@ -7,6 +7,11 @@ const config = {
     'content-type': `multipart/form-data`,
   }
 };
+const config2 = {
+  headers: {
+    'Content-Type': 'application/json',
+}
+};
 
 // Initial state with a more structured format
 const initialState = {
@@ -33,16 +38,18 @@ export const addCategoryWithImg = createAsyncThunk('products/create', async (inf
     const uploadResponse = await api.post('/uploads/', info, config);
     const imageUrl = uploadResponse.data.imageUrl; // Get the image URL from the response
 
-    console.log(imageUrl);
-    console.log(info.get('description'));
-    console.log(info.get('name'));
+    //console.log(imageUrl);
+    //console.log(info.get('description'));
+    //console.log(info.get('name'));
     
     // set new image url
     info.set('image' , imageUrl);
-    console.log(info.get('image'));
+    //console.log(info.get('image'));
 
     // create new category
-    const { data } = await api.post('categories/', info, config);
+    const formDataObj = Object.fromEntries(info.entries());
+    //console.log(formDataObj);
+    const { data } = await api.post('categories/', formDataObj, config2);
     console.log('product API response:', data); // Log API response
     return fulfillWithValue(data);
   }
