@@ -4,7 +4,7 @@ import api from '../../api/api';
 
 const config = {
   headers: {
-    'Content-Type': `multipart/form-data`,
+    'content-type': `multipart/form-data`,
   }
 };
 
@@ -42,7 +42,7 @@ export const addCategoryWithImg = createAsyncThunk('products/create', async (inf
     console.log(info.get('image'));
 
     // create new category
-    const { data } = await api.post('categories/', info);
+    const { data } = await api.post('categories/', info, config);
     console.log('product API response:', data); // Log API response
     return fulfillWithValue(data);
   }

@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const multer = require('multer');
+const upload = multer();
 const Category = require('../models/Category');
 
 // Get all categories
@@ -24,13 +26,13 @@ router.get('/:id', async (req, res) => {
 });
 
 // Create a new category
-router.post('/', async (req, res) => {
+router.post('/', upload.none(), async (req, res) => {
     const category = new Category(req.body);
     try {
         const newCategory = await category.save();
         res.status(201).json(newCategory);
     } catch (error) {
-        res.status(400).json({ message: error });
+        res.status(400).json({ message: error.message });
     }
 });
 
