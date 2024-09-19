@@ -32,11 +32,11 @@ export const addCategoryWithImg = createAsyncThunk('products/create', async (inf
 
     const uploadResponse = await api.post('/uploads/', info, config);
     const imageUrl = uploadResponse.data.imageUrl; // Get the image URL from the response
+
     console.log(imageUrl);
-
-
     console.log(info.get('description'));
     console.log(info.get('name'));
+    
     // set new image url
     info.set('image' , imageUrl);
     console.log(info.get('image'));
