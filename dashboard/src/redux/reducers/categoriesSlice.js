@@ -36,12 +36,17 @@ export const addCategoryWithImg = createAsyncThunk('products/create', async (inf
     const uploadResponse = await api.post('/uploads/', formData, config);
     const imageUrl = uploadResponse.data.imageUrl; // Get the image URL from the response
 
+
+
     // Update info object with imageUrl
-    const formData2 = new FormData();
+    /* const formData2 = new FormData();
     formData2.append('image', imageUrl);
     formData2.append('name', info.get('name'));
     formData2.append('description', info.get('description'));
-    const { data } = await api.post('categories/', formData2, config);
+    console.log(formData2); */
+
+    info.set('image' , imageUrl);
+    const { data } = await api.post('categories/', info);
     console.log('product API response:', data); // Log API response
     return fulfillWithValue(data);
   }
@@ -50,7 +55,7 @@ export const addCategoryWithImg = createAsyncThunk('products/create', async (inf
     return rejectWithValue(error.response.data);
 
   }
-})
+});
 
 
 // Slice
