@@ -47,7 +47,9 @@ const AddCategory = () => {
     if (selectedFile) {
       formData.append("image", selectedFile); // Append the file
     }
+    
     dispatch(addCategoryWithImg(formData));
+    console.log('data from ui:', formData);
   };
   console.log("category: ", categoryInfo);
 
