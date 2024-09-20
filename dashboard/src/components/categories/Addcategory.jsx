@@ -11,7 +11,7 @@ const AddCategory = () => {
   const [categoryInfo, setCategoryInfo] = useState({
     name: "",
     description: "",
-    image: "",
+    imageUrl: "",
   });
 
   const handleInput = (e) => {
@@ -43,7 +43,7 @@ const AddCategory = () => {
     formData.append("name", categoryInfo.name);
     formData.append("description", categoryInfo.description);
     if (selectedFile) {
-      formData.append("image", selectedFile); // Append the file
+      formData.append("imageUrl", selectedFile); // Append the file
     }
 
     dispatch(addCategoryWithImg(formData));
@@ -84,7 +84,7 @@ const AddCategory = () => {
           <div className="p-5 rounded-3xl flex justify-center items-center h-full">
             <div>
               <div className="text-slate-400 text-center flex justify-center">
-                <label htmlFor="image" className="cursor-pointer">
+                <label htmlFor="imageUrl" className="cursor-pointer">
                   {imgPreview ? (
                     <div className="relative">
                       <img
@@ -105,9 +105,9 @@ const AddCategory = () => {
                 </label>
                 <input
                   type="file"
-                  name="image"
+                  name="imageUrl"
                   onChange={onImageChange}
-                  id="image"
+                  id="imageUrl"
                   className="hidden"
                 />
               </div>

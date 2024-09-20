@@ -1,25 +1,27 @@
 import { useState } from "react";
-import { category } from "../data";
+
 import { FaImages } from "react-icons/fa";
 import { IoIosCloseCircle } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCategories } from "../../redux/reducers/categoriesSlice";
 import { useEffect } from "react";
+import { addProductWithImage } from "../../redux/reducers/productsSlice";
+
 const Addproducts = () => {
   const dispatch = useDispatch();
   const { categories } = useSelector((state) => state.categories);
-
+  const [imgPreview, setImgPreview] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
   useEffect(() => {
     dispatch(fetchCategories());
   }, [dispatch]);
   console.log("categories: ", categories);
 
-  const [imgPreview, setImgPreview] = useState(null);
   const [productInfo, setProductInfo] = useState({
     name: "",
     category: "",
     price: "",
-    image: "",
+    imageUrl: "",
     description: "",
   });
   const handleInput = (e) => {
@@ -34,22 +36,36 @@ const Addproducts = () => {
       setImgPreview(URL.createObjectURL(file));
       setProductInfo({
         ...productInfo,
-        image: file,
+        imageUrl: file,
       });
     }
   };
+
   const handleRemoveImg = (e) => {
     e.stopPropagation(); // Prevent triggering the file picker
     setImgPreview(null);
     setProductInfo({ ...productInfo, image: "" });
   };
+  const handleAddProduct = (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("name", productInfo.name);
+    formData.append("description", productInfo.description);
+    formData.append("price", productInfo.price);
+    formData.append("category", productInfo.category);
 
+    if (selectedFile) {
+      formData.append("imageUrl", selectedFile); // Append the file
+    }
+    dispatch(addProductWithImage(formData));
+    console.log("data from ui:", formData);
+  };
   // const save = (e) => {
   //   e.preventDefault();
   //   const { name, category, price, image, description } = productInfo;
   // };
 
-  console.log("info: ", productInfo);
+  console.log("product info sent: ", productInfo);
   return (
     <div className="bg-white text-slate-800 p-8 rounded-md shadow-sm">
       <strong className="text-xl"> Add new Product</strong>
@@ -111,12 +127,16 @@ const Addproducts = () => {
           <div className="p-5 rounded-3xl flex justify-center items-center h-full">
             <div>
               <div className="text-slate-400 text-center flex justify-center">
-                <label htmlFor="image" className="cursor-pointer">
+                <label htmlFor="imageUrl" className="cursor-pointer">
                   {imgPreview ? (
                     <div className="relative">
-                      <img src={imgPreview} className="w-[100px] h-[100px]" />
+                      <img
+                        src={imgPreview}
+                        className="w-[100px] h-[100px]"
+                        alt="Preview"
+                      />
                       <span
-                        className="absolute -top-4 -right-[40px]"
+                        className="absolute -top-4 -right-[40px] cursor-pointer"
                         onClick={handleRemoveImg}
                       >
                         <IoIosCloseCircle size="30px" />
@@ -128,9 +148,9 @@ const Addproducts = () => {
                 </label>
                 <input
                   type="file"
-                  name="image"
+                  name="imageUrl"
                   onChange={onImageChange}
-                  id="image"
+                  id="imageUrl"
                   className="hidden"
                 />
               </div>
@@ -142,6 +162,14 @@ const Addproducts = () => {
           </div>
         </div>
       </form>
+      <div className="flex justify-end mt-6">
+        <button
+          className=" rounded-md font-semibold p-5 text-white bg-[#ff2d2d] hover:bg-slate-800 transition-all duration-300"
+          onClick={handleAddProduct}
+        >
+          Add category
+        </button>
+      </div>
     </div>
   );
 };

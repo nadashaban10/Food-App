@@ -33,22 +33,12 @@ export const fetchCategories = createAsyncThunk('categories/fetchCategories', as
 
 export const addCategoryWithImg = createAsyncThunk('products/create', async (info, { rejectWithValue, fulfillWithValue }) => {
   try {
-
-
     const uploadResponse = await api.post('/uploads/', info, config);
     const imageUrl = uploadResponse.data.imageUrl; // Get the image URL from the response
-
-    //console.log(imageUrl);
-    //console.log(info.get('description'));
-    //console.log(info.get('name'));
-
     // set new image url
-    info.set('image', imageUrl);
-    //console.log(info.get('image'));
-
+    info.set('imageUrl', imageUrl);
     // create new category
     const formDataObj = Object.fromEntries(info.entries());
-    //console.log(formDataObj);
     const { data } = await api.post('categories/', formDataObj, config2);
     console.log('product API response:', data); // Log API response
     return fulfillWithValue(data);
