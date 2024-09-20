@@ -55,9 +55,12 @@ const Addproducts = () => {
     formData.append("category", productInfo.category);
 
     if (selectedFile) {
+      console.log
       formData.append("imageUrl", selectedFile); // Append the file
     }
+    
     dispatch(addProductWithImage(formData));
+    console.log(formData.imageUrl);
     console.log("data from ui:", formData);
   };
   // const save = (e) => {

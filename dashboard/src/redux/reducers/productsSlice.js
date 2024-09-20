@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import api from '../../api/api';
-
+import api from '../../api/api.jsx';
 
 const config = {
   headers: {
@@ -14,7 +13,8 @@ const config2 = {
 };
 
 const initialState = {
-  products: []
+  products: [],
+  status: 'idle',
 };
 
 // Fetch all products
@@ -28,7 +28,7 @@ export const fetchProducts = createAsyncThunk('products/fetchProducts', async ()
 // Add a new product with image upload
 export const addProductWithImage = createAsyncThunk('products/create', async (info, { rejectWithValue, fulfillWithValue }) => {
   try {
-    console.log('image:',info.get('imageUrl'));
+    console.log('image:', info.get('imageUrl'));
     const uploadResponse = await api.post('/uploads/', info, config);
     const imageUrl = uploadResponse.data.imageUrl; // Get the image URL from the response
     console.log('imageURL: ', imageUrl)
