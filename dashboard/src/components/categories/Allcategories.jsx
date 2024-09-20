@@ -42,7 +42,13 @@ const AllCategories = () => {
 
                 <td className="p-2">{category.name}</td>
                 <td className="p-2">{category.description}</td>
-                <td className="p-2">{category.image}</td>
+                <td className="p-2">
+                  <img
+                    src={`.${category.image}`}
+                    className="w-[75px] h-[75px]"
+                    alt={category.name}
+                  />
+                </td>
                 {/* <td className="p-2">{product.image}</td> */}
                 <td className="">
                   <div className="flex gap-2">

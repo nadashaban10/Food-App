@@ -24,11 +24,9 @@ const AddCategory = () => {
   const onImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setImgPreview(URL.createObjectURL(file));
-      // setCategoryInfo({
-      //   ...categoryInfo,
-      //   image: file,
-      // });
+      const previewUrl = URL.createObjectURL(file);
+      setImgPreview(previewUrl);
+      console.log("Image Preview URL: ", previewUrl); // Check if URL is correct
       setSelectedFile(file);
     }
   };
@@ -47,9 +45,9 @@ const AddCategory = () => {
     if (selectedFile) {
       formData.append("image", selectedFile); // Append the file
     }
-    
+
     dispatch(addCategoryWithImg(formData));
-    console.log('data from ui:', formData);
+    console.log("data from ui:", formData);
   };
   console.log("category: ", categoryInfo);
 

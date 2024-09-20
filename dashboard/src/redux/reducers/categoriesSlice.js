@@ -10,7 +10,7 @@ const config = {
 const config2 = {
   headers: {
     'Content-Type': 'application/json',
-}
+  }
 };
 
 // Initial state with a more structured format
@@ -33,7 +33,7 @@ export const fetchCategories = createAsyncThunk('categories/fetchCategories', as
 
 export const addCategoryWithImg = createAsyncThunk('products/create', async (info, { rejectWithValue, fulfillWithValue }) => {
   try {
-    
+
 
     const uploadResponse = await api.post('/uploads/', info, config);
     const imageUrl = uploadResponse.data.imageUrl; // Get the image URL from the response
@@ -41,9 +41,9 @@ export const addCategoryWithImg = createAsyncThunk('products/create', async (inf
     //console.log(imageUrl);
     //console.log(info.get('description'));
     //console.log(info.get('name'));
-    
+
     // set new image url
-    info.set('image' , imageUrl);
+    info.set('image', imageUrl);
     //console.log(info.get('image'));
 
     // create new category
@@ -76,7 +76,7 @@ const categoriesSlice = createSlice({
       .addCase(addCategoryWithImg.fulfilled, (state, action) => {
         state.status = 'succeeded';
         console.log('Action payload:', action.payload); // Log action payload
-        state.categories = action.payload;
+        state.categories = [...state.categories, action.payload];
       });
   },
 });
