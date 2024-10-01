@@ -1,41 +1,70 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom"; // Ensure this is imported from 'react-router-dom'
+import icon1 from '../../public/images/food-delivery.png';
+import icon2 from '../../public/images/delivery-man.png';
+import icon3 from '../../public/images/fresh.png';
 
 function Categories() {
-  const [categories] = useState([
-    { name: "المشويات", image: "images/steak-with-flame-it_950347-4081.avif" },
-    { name: "الجريل", image: "images/Pastitsio-_4-SQ.webp" },
-    { name: "المكرونات", image: "images/images.jpg" },
-    {
-      name: "سلطات ومقبلات",
-      image: "images/a39okhfk_620_625x300_21_January_20.webp",
-    },
-    { name: "محاشي وممبار", image: "images/20211128145812863.jpg" },
-    {
-      name: "الطواجن",
-      image: "images/181204_Olive-Magazine_Berenjak_201-9c70cd3.jpg",
-    },
-    { name: "سندوتشات", image: "images/images.jpg" },
-    { name: "المكرونات", image: "images/images.jpg" },
-  ]);
+  const icones = icon1;
+  const icones2 = icon2;
+  const icones3 = icon3;
+  const navigate = useNavigate();
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [foodItems, setFoodItems] = useState([]); // Added state to store fetched food items
+
+  const fetchFoodItemsByCategory = async (categoryId) => {
+    if (!categoryId) return; // Ensure categoryId is valid
+    const response = await fetch(`http://localhost:5000/api/fooditems/category/${categoryId}`);
+    const data = await response.json();
+    console.log(data);
+    setFoodItems(data);
+  };
+
+  useEffect(() => {
+    if (selectedCategory) {
+      fetchFoodItemsByCategory(selectedCategory);
+    }
+  }, [selectedCategory]);
+
+  const handleCategoryClick = (categoryId) => {
+    // Navigate to ItemsByCategory page with the categoryId as a URL parameter
+    navigate(`/itemsbycategory/${categoryId}`);
+  };
+
+  const fetchCategories = async () => {
+    const response = await fetch("http://localhost:5000/api/categories");
+    const data = await response.json();
+    setCategories(data);
+  };
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
 
   return (
-    <div className="w-[87%] mx-auto">
-      <h1 className="text-3xl font-bold m-5 text-center">الاصناف</h1>
-      <div className="grid grid-cols-1 cursor-pointer sm:grid-cols-2 md:grid-cols-4 gap-8  ">
-        {categories.map((category) => (
-          <div
-            key={category.name}
-            className="mb-5 bg-white w-full  hover:shadow-lg transition duration-300 ease-in-out  flex flex-col items-center justify-between"
+    <div className="w-[85%] mx-auto " dir="rtl">
+      {/* Categories Section */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mt-9 ml-5 mr-5">
+        {categories.map((category, index) => (
+          <motion.div
+            onClick={() => handleCategoryClick(category._id)} // Pass category ID
+            key={category._id} // Ensure unique key
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: index * 0.1 }}
+            className="bg-[#be0002] w-full border rounded-xl hover:shadow-lg transition duration-300 ease-in-out flex flex-col items-center justify-between"
           >
-            <div className="overflow-hidden w-[100%] h-[200px]">
+            <div className="overflow-hidden w-full h-[200px]">
               <img
-                src={category.image}
+                src={category.imageUrls}
                 alt={category.name}
-                className="w-full h-full object-cover "
+                className="w-full h-full object-cover transform transition duration-300 ease-in-out hover:scale-110"
               />
             </div>
-            {/* <h3 className="text-lg font-bold mt-2">{category.name}</h3> */}
-          </div>
+            <h3 className="text-lg font-bold mt-2 text-white">{category.name}</h3>
+          </motion.div>
         ))}
       </div>
     </div>

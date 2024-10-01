@@ -1,11 +1,36 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FaMapMarkerAlt, FaPhoneAlt, FaEnvelope, FaGlobe } from 'react-icons/fa';
+import { motion, useAnimation } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
 
 const Footer = () => {
+  const controls = useAnimation();
+  const [ref, inView] = useInView({
+    triggerOnce: true, // Animates only once when in view
+    threshold: 0.2,    // Percentage of the component that needs to be visible
+  });
+
+  useEffect(() => {
+    if (inView) {
+      controls.start('visible');
+    }
+  }, [controls, inView]);
+
+  const fadeInVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
+  };
+
   return (
     <footer className="bg-gray-900 text-white py-10 border-t-2 border-[#be0002] w-full mt-6 rtl:text-right" dir="rtl">
       <div className="max-w-6xl mx-auto px-4 sm:px-8">
-        <div className="flex flex-col md:flex-row justify-between mb-8 space-y-6 md:space-y-0">
+        <motion.div
+          ref={ref}
+          initial="hidden"
+          animate={controls}
+          variants={fadeInVariants}
+          className="flex flex-col md:flex-row justify-between mb-8 space-y-6 md:space-y-0"
+        >
           {/* Open Hours */}
           <div className="flex-1">
             <h4 className="text-2xl font-bold mb-4 text-[#be0002] border-b-2 border-[#be0002] inline-block pb-1">
@@ -62,7 +87,7 @@ const Footer = () => {
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         <div className="text-center text-sm border-t border-gray-700 pt-4">
           &copy; {new Date().getFullYear()} . جميع الحقوق محفوظة.

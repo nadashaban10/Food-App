@@ -2,14 +2,16 @@ import { Link } from "react-router-dom";
 import { IoIosCloseCircle } from "react-icons/io";
 import Header from "./Header";
 import NavBar from "./Nav";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { AuthContext } from "../../AuthContext"; // Assuming AuthContext provides isAuthenticated
 
 const Hero = () => {
   const [showSideBar, setShowSideBar] = useState(false);
+  const { isAuthenticated, logout, login } = useContext(AuthContext); // Assuming AuthContext provides isAuthenticated
 
   return (
     <>
-      <div className="w-full mx-auto relative">
+      <div className="w-full mx-auto relative" dir="rtl">
         {/* Hero background image */}
         <div className="h-screen bg-cover bg-center bg-fixed bg-[url(http://localhost:5173/images/hero-cover.jpg)]">
           {/* Black overlay */}
@@ -46,30 +48,64 @@ const Hero = () => {
 
             <div className="flex p-5 sm:p-10 text-right justify-center">
               <ul className="flex flex-col justify-end items-start gap-6 sm:gap-14 text-xl sm:text-2xl text-right">
-                <li className="cursor-pointer">
-                  <Link
-                    to="/"
-                    className="block cursor-pointer text-slate-800 hover:text-[#be0002]"
-                  >
-                    الصفحة الرئيسيه
-                  </Link>
-                </li>
-                <li className="cursor-pointer">
-                  <Link
-                    to="/"
-                    className="block cursor-pointer text-slate-800 hover:text-[#be0002]"
-                  >
-                    القائمة
-                  </Link>
-                </li>
-                <li className="cursor-pointer">
-                  <Link
-                    to="/"
-                    className="block cursor-pointer text-slate-800 hover:text-[#be0002]"
-                  >
-                    اتصل بنا
-                  </Link>
-                </li>
+                {isAuthenticated ? (
+                  <>
+                    <li className="cursor-pointer"  onClick={logout}> تسجيل خروج
+                     
+                    </li>
+                    <li className="cursor-pointer">
+                      <Link
+                        to="/"
+                        className="block cursor-pointer text-slate-800 hover:text-[#be0002]"
+                      >
+                        الصفحة الرئيسيه
+                      </Link>
+                    </li>
+                    <li className="cursor-pointer">
+                      <Link
+                        to="/menu"
+                        className="block cursor-pointer text-slate-800 hover:text-[#be0002]"
+                      >
+                        المنيو
+                      </Link>
+                    </li>
+                    <li className="cursor-pointer">
+                      <Link
+                        to="/"
+                        className="block cursor-pointer text-slate-800 hover:text-[#be0002]"
+                      >
+                        اتصل بنا
+                      </Link>
+                    </li>
+                  </>
+                ) : (
+                  <>
+                    <li className="cursor-pointer">
+                      <Link
+                        to="/"
+                        className="block cursor-pointer text-slate-800 hover:text-[#be0002]"
+                      >
+                        الصفحة الرئيسيه
+                      </Link>
+                    </li>
+                    <li className="cursor-pointer">
+                      <Link
+                        to="/menu"
+                        className="block cursor-pointer text-slate-800 hover:text-[#be0002]"
+                      >
+                        المنيو
+                      </Link>
+                    </li>
+                    <li className="cursor-pointer">
+                      <Link
+                        to="/"
+                        className="block cursor-pointer text-slate-800 hover:text-[#be0002]"
+                      >
+                        اتصل بنا
+                      </Link>
+                    </li>
+                  </>
+                )}
               </ul>
             </div>
           </div>
