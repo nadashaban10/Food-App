@@ -3,16 +3,15 @@ import { motion } from 'framer-motion';
 import { Link, useNavigate } from "react-router-dom";
 import MenuCard from "../components/MenuCard";
 import img from '/images/hero-cover.jpg';
-import { FaRegHeart } from "react-icons/fa";
-import { FiShoppingCart } from "react-icons/fi";
+
 import Footer from '../components/Footer';
 import icon1 from '../../public/images/food-delivery.png';
 import icon2 from '../../public/images/delivery-man.png';
 import icon3 from '../../public/images/fresh.png';
+import NavBar from "../components/Header/Nav";
 
 const Menu = () => {
   const [selectedButton, setSelectedButton] = useState(null);
-  const products = [1, 2, 3, 4, 5, 6, 7, 8];
   const imageHeader = img;
   const [categories, setCategories] = useState([]);
   const [AddToCartItems, setAddToCartItems] = useState(0);
@@ -70,13 +69,7 @@ const [selectedCategory, setSelectedCategory] = useState(null);
     document.getElementById("cards-section").scrollIntoView({ behavior: "smooth" });
   };
 
-  const handleClickCart = (action) => {
-    if (action === "increment") {
-      setAddToCartItems((prevItems) => prevItems + 1);
-    } else if (action === "decrement" && AddToCartItems > 0) {
-      setAddToCartItems((prevItems) => prevItems - 1); 
-    }
-  };
+ 
   const handleClick = (categoryIndex) => {
     setSelectedButton(categoryIndex); // Update the selected button
   
@@ -92,26 +85,12 @@ const [selectedCategory, setSelectedCategory] = useState(null);
   return (
     <div className="flex flex-col min-h-screen" dir="rtl">
       {/* Main content */}
+      <NavBar />
       <div className="flex-grow">
         <div className="relative">
           <img src={imageHeader} alt="food" className="w-full h-[300px] mb-[50px] object-cover" />
           <div className="absolute top-0 left-0 w-full h-[300px] bg-black opacity-50"></div>
-          <div className="top-0 left-0 flex flex-col sm:flex-row justify-end items-start gap-5 p-1 sm:p-5 fixed cursor-pointer ">
-            {/* Wishlist */}
-            <div className="flex relative justify-center items-center cursor-pointer rounded-full w-[50px] h-[50px] bg-[rgb(190,0,2)] text-white hover:bg-[#be00037b]">
-              <span className="text-2xl">
-                <FaRegHeart />
-                <span className="absolute top-0 right-0 text-[15px] font-bold bg-white pt-1 text-[rgb(190,0,2)] rounded-full w-[20px] h-[20px] flex justify-center items-center">0</span>
-              </span>
-            </div>
-            {/* Shopping Cart */}
-            <div className="flex relative justify-center items-center rounded-full w-[50px] h-[50px] bg-[#be0002] text-white hover:bg-[#be00037b]">
-              <span className="text-2xl">
-                <FiShoppingCart onClick={handleCartClick} />
-                <span className="absolute top-0 right-0 text-[15px] font-bold bg-white pt-1 text-[rgb(190,0,2)] rounded-full w-[20px] h-[20px] flex justify-center items-center">{AddToCartItems}</span>
-              </span>
-            </div>
-          </div>
+          
           <motion.h1
             initial={{ opacity: 0, y: -30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -178,7 +157,7 @@ const [selectedCategory, setSelectedCategory] = useState(null);
           {Array.isArray(fooditems) && fooditems.length > 0 ? (
             fooditems.map((product, index) => (
               <div key={index}>
-                <MenuCard product={product} handleClickCart={handleClickCart} />
+                <MenuCard product={product}  />
               </div>
             ))
           ) : (

@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import NavBar from "../components/Header/Nav";
 import Footer from "../components/Footer";
 import foodimage from "/images/food-delivery (1).png";
 import { motion } from "framer-motion";
+import { CartContext } from "../components/CartContext";
 
 function Order() {
+  const { cartState, addItemToCart, updateItemQuantity, removeItemFromCart } = useContext(CartContext);
+
   return (
     <>
       <div className="order w-[95%] m-5 h-[100%]">
@@ -31,45 +34,52 @@ function Order() {
             <h2 className=" title flex mr-8 font-bold"> عدد العناصر</h2>
             <div className="Breakline bg-gray-200 h-[1px] mx-5 my-2"></div>
             <div className="total-items flex flex-col mx-5 my-2">
-              <span>المجموع: 25.00</span>
+              <span>المجموع: {cartState.totalPrice.toFixed(2)}</span>
               <span>الضريبة: 5%</span>
               <span>التوصيل: 1.25</span>
               <div className="Breakline bg-gray-200 m-5 h-[1px] w-[100%]"></div>
-              <span className="font-bold">اجمالي الدفع: 26.25</span>
+              <span className="font-bold">اجمالي الدفع: {(cartState.totalPrice * 1.05 + 1.25).toFixed(2)}</span>
               <button className="  bg-red-800  text-white font-bold mt-4 p-2">ادفع الان</button>
             </div>
           </div>
 
           {/* Right section */}
           <div className="flex flex-col space-y-5 w-full sm:w-[60%] mr-5">
-            {/* Repeat the right-sec three times */}
-            {[...Array(3)].map((_, index) => (
+            {cartState.cartItems.map((item, index) => (
               <div key={index} className="right-sec p-4 h-[100%] w-[100%]">
                 <div className="order-list">
                   <div className="order-item flex items-center justify-between p-2">
                     <img
-                      src="images/steak-with-flame-it_950347-4081.avif"
-                      alt="المشويات"
+                      src={item.foodItem.imageUrl}
+                      alt={item.foodItem.name}
                       className="w-[80px] h-[80px] object-cover"
                     />
 
                     <div className="order-quantity m-2 p-2 flex flex-row items-center">
-                      <span className="block mx-2">25.00</span>
+                      <span className="block mx-2">{item.foodItem.price.toFixed(2)}</span>
                       <span className="block mx-2">السعر</span>
+                      <span className="block mx-2">{item.quantity}</span>
                       <span className="block mx-2"> العدد </span>
-                      <span className="block mx-2">اسم المنتج </span>
+                      <span className="block mx-2">{item.foodItem.name}</span>
                       <div className="flex bg-white">
                         <button
-                          className= 'btn w-[44px] rounded-3xl pt-1 m-1 flex items-center justify-center'
+                          className='btn w-[44px] rounded-3xl pt-1 m-1 flex items-center justify-center'
+                          onClick={() => updateItemQuantity(item.foodItem.id, item.quantity + 1)}
                         >
                           +
                         </button>
-                        <button className="btn border border-red-600 w-[40px] text-red-500 rounded-3xl pt-1 m-1 flex items-center justify-center">
+                        <button
+                          className="btn border border-red-600 w-[40px] text-red-500 rounded-3xl pt-1 m-1 flex items-center justify-center"
+                          onClick={() => updateItemQuantity(item.foodItem.id, item.quantity - 1)}
+                        >
                           -
                         </button>
                       </div>
                     </div>
-                    <button className="bg-red-500 text-white px-4 py-1 rounded">
+                    <button
+                      className="bg-red-500 text-white px-4 py-1 rounded"
+                      onClick={() => removeItemFromCart(item.foodItem.id)}
+                    >
                       حذف
                     </button>
                   </div>

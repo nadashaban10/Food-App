@@ -1,31 +1,43 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import { CartContext } from '../components/CartContext';
 
-function MenuCard({ product, handleClickCart }) {
+function MenuCard({ product }) {
+  const { addItemToCart, updateItemQuantity } = useContext(CartContext); // Fetch context methods
   const [number, setNumber] = useState(0);
   const [color, setColor] = useState('black');
   const [clicked, setClicked] = useState(false);
 
   const handleIncrement = () => {
-    setNumber(number + 1);
+    if ('increment')
+    {
+    const newQuantity = number + 1;
+    setNumber(newQuantity);
     setColor('#dc3545');
     setClicked(true);
 
-    // Call the handleClickCart prop to update the cart in the parent
-    handleClickCart("increment");
-  };
+    // Call addItemToCart with the actual product data
+    addItemToCart(product);
 
-  const handleDecrement = () => {
-    if (number > 0) {
-      setNumber(number - 1);
-    
-      setClicked(true);
-       handleClickCart("decrement");
-      if (number - 1 === 0) {
-        setColor('black');
-      }
+    // Optionally, you can update the cart quantity directly as well
+    updateItemQuantity(product.id, newQuantity);
     }
   };
 
+  const handleDecrement = () => {
+    if (number > 0 && number != 0 && 'decrement') {
+      const newQuantity = number - 1;
+      setNumber(newQuantity);
+      setClicked(true);
+      
+      // If the quantity becomes 0, reset the button color
+      if (newQuantity === 0) {
+        setColor('black');
+      }
+
+      // Call updateItemQuantity with the updated quantity
+      updateItemQuantity(product.id, newQuantity);
+    }
+  };
 
   return (
     <div className='card h-[350px] w-[90%] sm:w-[300px] md:w-[250px] lg:w-[300px] bg-white rounded-xl'>
@@ -46,7 +58,7 @@ function MenuCard({ product, handleClickCart }) {
               className='btn border border-red-600 w-[40px] text-red-500 rounded-3xl pt-1 m-1 flex items-center justify-center'
               onClick={handleDecrement}
             >
-              - {clicked && number > 0}
+              - 
             </button>
           </div>
           <span className='card-price mt-4 font-bold ml-3 pb-1 text-red-700'>{product.price}</span>
