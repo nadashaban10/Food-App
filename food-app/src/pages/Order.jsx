@@ -3,11 +3,7 @@ import NavBar from "../components/Header/Nav";
 import Footer from "../components/Footer";
 import foodimage from "/images/food-delivery (1).png";
 import { motion } from "framer-motion";
-import { CartContext } from "../components/CartContext";
-
 function Order() {
-  const { cartState, addItemToCart, updateItemQuantity, removeItemFromCart } = useContext(CartContext);
-
   return (
     <>
       <div className="order w-[95%] m-5 h-[100%]">

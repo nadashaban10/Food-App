@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react';
-import { CartContext } from '../components/CartContext';
+
 
 function MenuCard({ product }) {
-  const { addItemToCart, updateItemQuantity } = useContext(CartContext); // Fetch context methods
+
   const [number, setNumber] = useState(0);
   const [color, setColor] = useState('black');
   const [clicked, setClicked] = useState(false);
@@ -15,11 +15,6 @@ function MenuCard({ product }) {
     setColor('#dc3545');
     setClicked(true);
 
-    // Call addItemToCart with the actual product data
-    addItemToCart(product);
-
-    // Optionally, you can update the cart quantity directly as well
-    updateItemQuantity(product.id, newQuantity);
     }
   };
 
