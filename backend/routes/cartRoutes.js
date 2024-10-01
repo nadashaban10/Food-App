@@ -30,7 +30,7 @@ router.post('/', async (req, res) => {
     }
 });
 
-// Get all carts (for testing purposes, you might restrict this to admin later)
+// Get all carts 
 router.get('/', async (req, res) => {
     try {
         const carts = await Cart.find().populate('items.foodItem');
@@ -56,7 +56,7 @@ router.get('/:userId', async (req, res) => {
     }
 });
 
-// Update cart items (e.g., change quantities)
+// Update cart items 
 router.put('/:userId', async (req, res) => {
     try {
         const { userId } = req.params;
@@ -92,7 +92,7 @@ router.delete('/:userId/item/:foodItemId', async (req, res) => {
         // Remove the item with the specified foodItemId
         cart.items = cart.items.filter(item => item.foodItem.toString() !== foodItemId);
 
-        // Save the updated cart (this will trigger the pre-save hook to recalculate total)
+        // Save the updated cart 
         await cart.save();
 
         return res.status(200).json(cart);
