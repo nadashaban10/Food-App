@@ -7,7 +7,7 @@ export const category = [
   },
 ];
 
-export const products = [
+export const allproducts = [
   {
     id: 123,
     name: "Floor lamp",

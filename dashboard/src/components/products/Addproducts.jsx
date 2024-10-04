@@ -15,7 +15,7 @@ const Addproducts = () => {
   useEffect(() => {
     dispatch(fetchCategories());
   }, [dispatch]);
-  console.log("categories: ", categories);
+  // console.log("categories: ", categories);
 
   const [productInfo, setProductInfo] = useState({
     name: "",
@@ -23,6 +23,8 @@ const Addproducts = () => {
     price: "",
     imageUrl: "",
     description: "",
+    richDescription: "",
+    discount: "",
   });
   const handleInput = (e) => {
     setProductInfo({
@@ -34,34 +36,37 @@ const Addproducts = () => {
     const file = e.target.files[0];
     if (file) {
       setImgPreview(URL.createObjectURL(file));
-      setProductInfo({
-        ...productInfo,
-        imageUrl: file,
-      });
+      console.log("Image Preview URL: ", imgPreview); // Check if URL is correct
+      setSelectedFile(file);
+
+      // setProductInfo({
+      //   ...productInfo,
+      //   imageUrl: file,
+      // });
     }
   };
 
   const handleRemoveImg = (e) => {
     e.stopPropagation(); // Prevent triggering the file picker
     setImgPreview(null);
-    setProductInfo({ ...productInfo, image: "" });
+    setSelectedFile(null);
+
+    // setProductInfo({ ...productInfo, image: "" });
   };
   const handleAddProduct = (e) => {
     e.preventDefault();
     const formData = new FormData();
     formData.append("name", productInfo.name);
     formData.append("description", productInfo.description);
+    formData.append("richDescription", productInfo.richDescription);
     formData.append("price", productInfo.price);
     formData.append("category", productInfo.category);
+    formData.append("discount", productInfo.discount);
 
     if (selectedFile) {
-      console.log
       formData.append("imageUrl", selectedFile); // Append the file
     }
-    
     dispatch(addProductWithImage(formData));
-    console.log(formData.imageUrl);
-    console.log("data from ui:", formData);
   };
   // const save = (e) => {
   //   e.preventDefault();
@@ -114,7 +119,19 @@ const Addproducts = () => {
             />
           </div>
           <div className="flex flex-col gap-1 m-2 w-full">
-            <label htmlFor="description"> Description </label>
+            <label htmlFor="discount"> Discount </label>
+            <input
+              onChange={handleInput}
+              value={productInfo.discount}
+              type="text"
+              className="w-full px-3 py-2 border border-slate-200 outline-none focus:border-green-500 "
+              name="discount"
+              id="discount"
+              placeholder="Discount %"
+            />
+          </div>
+          <div className="flex flex-col gap-1 m-2 w-full">
+            <label htmlFor="description">Description </label>
             <textarea
               onChange={handleInput}
               value={productInfo.description}
@@ -125,11 +142,23 @@ const Addproducts = () => {
               placeholder="Description"
             />
           </div>
+          <div className="flex flex-col gap-1 m-2 w-full">
+            <label htmlFor="richDescription">Rich Description </label>
+            <textarea
+              onChange={handleInput}
+              value={productInfo.richDescription}
+              type="textarea"
+              className="w-full px-3 py-2 border border-slate-200 outline-none focus:border-green-500 "
+              name="richDescription"
+              id="richDescription"
+              placeholder="Rich Description"
+            />
+          </div>
         </div>
-        <div className="lg:w-6/12 w-full flex md:flex-col justify-center items-center md:gap-2 gap-5 bg-slate-100">
+        <div className="lg:w-6/12 w-full h-[300px] flex md:flex-col justify-center items-center md:gap-2 gap-5 bg-slate-100">
           <div className="p-5 rounded-3xl flex justify-center items-center h-full">
             <div>
-              <div className="text-slate-400 text-center flex justify-center">
+              <div className="text-slate-400  text-center flex justify-center">
                 <label htmlFor="imageUrl" className="cursor-pointer">
                   {imgPreview ? (
                     <div className="relative">
@@ -170,7 +199,7 @@ const Addproducts = () => {
           className=" rounded-md font-semibold p-5 text-white bg-[#ff2d2d] hover:bg-slate-800 transition-all duration-300"
           onClick={handleAddProduct}
         >
-          Add category
+          Add Product
         </button>
       </div>
     </div>

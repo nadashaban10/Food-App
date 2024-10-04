@@ -14,13 +14,33 @@ const config2 = {
 
 const initialState = {
   products: [],
+  selectedProduct: [],
   status: 'idle',
 };
 
 // Fetch all products
 export const fetchProducts = createAsyncThunk('products/fetchProducts', async () => {
-  const response = await api.get('products');
-  return response.data;
+
+  try {
+    const response = await api.get('fooditems/');
+    console.log('API response:', response.data); // Log API response
+    return response.data;
+  } catch (error) {
+    console.error('API error:', error.message); // Log any errors
+    return error.message;
+  }
+});
+// Get product by id all products
+export const getProductById = createAsyncThunk('products/getproductbyId', async (id) => {
+
+  try {
+    const response = await api.get(`fooditems/${id}`);
+    console.log('API response:', response.data); // Log API response
+    return response.data;
+  } catch (error) {
+    console.error('API error:', error.message); // Log any errors
+    return error.message;
+  }
 });
 
 
@@ -54,8 +74,19 @@ const productsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+      .addCase(fetchProducts.pending, (state) => {
+        state.status = 'loading';
+      })
       .addCase(fetchProducts.fulfilled, (state, action) => {
+        state.status = 'succeeded';
         state.products = action.payload;
+      })
+      .addCase(fetchProducts.rejected, (state) => {
+        state.status = 'failed';
+      })
+      .addCase(getProductById.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.selectedProduct = action.payload;
       })
       .addCase(addProductWithImage.fulfilled, (state, action) => {
         state.status = 'succeeded';

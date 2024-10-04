@@ -49,7 +49,7 @@ const AddCategory = () => {
     dispatch(addCategoryWithImg(formData));
     console.log("data from ui:", formData);
   };
-  console.log("category: ", categoryInfo);
+  // console.log("category: ", categoryInfo);
 
   return (
     <div className="bg-white text-slate-800 p-8 rounded-md shadow-sm">

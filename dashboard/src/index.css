@@ -37,3 +37,16 @@ html {
   color: var(--hover-color);
   background-color: rgb(100 116 139 / 0.3);
 }
+.active-Sub {
+  color: yellow;
+}
+
+.submenu-wrapper {
+  overflow: hidden;
+  transition: max-height 0.3s ease-in-out;
+  max-height: 0; /* Initially hidden */
+}
+
+.submenu-wrapper.open {
+  max-height: 500px; /* Adjust to a reasonable maximum, or use 'auto' for unrestricted height */
+}
