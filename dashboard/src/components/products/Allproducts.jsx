@@ -3,11 +3,21 @@ import { RiDeleteBin5Fill } from "react-icons/ri";
 import { FaPencil } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../../redux/reducers/productsSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const AllProducts = () => {
   const dispatch = useDispatch();
   const { products, status } = useSelector((state) => state.products);
+  const { query, results } = useSelector((state) => state.search);
+  const [viewProducts, setViewProducts] = useState(products);
+  // Update viewProducts based on query
+  useEffect(() => {
+    if (query) {
+      setViewProducts(results);
+    } else {
+      setViewProducts(products);
+    }
+  }, [query, results, products]);
 
   useEffect(() => {
     dispatch(fetchProducts());
@@ -43,7 +53,7 @@ const AllProducts = () => {
             </tr>
           </thead>
           <tbody className="font-semibold">
-            {products.map((product) => (
+            {viewProducts.map((product) => (
               <tr
                 key={product._id}
                 className=" hover:bg-slate-100 border-b cursor-pointer"
