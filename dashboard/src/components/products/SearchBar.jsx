@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchSearch } from "../../redux/reducers/searchSlice";
+import { fetchSearch, setQuery } from "../../redux/reducers/searchSlice";
 
 const SearchBar = () => {
   const dispatch = useDispatch();
@@ -14,9 +14,12 @@ const SearchBar = () => {
 
   useEffect(() => {
     if (input) {
+      dispatch(setQuery(input));
+      console.log("Dispatching fetchSearch with input:", input);
       dispatch(fetchSearch(input));
     }
   }, [dispatch, input]);
+
   console.log("results", results);
   console.log("input", input);
 

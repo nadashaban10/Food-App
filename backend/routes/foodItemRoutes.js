@@ -12,24 +12,23 @@ router.get('/', async (req, res) => {
     }
 });
 
-
 // Get all food items with optional search by name and description
 router.get('/search', async (req, res) => {
     try {
-        
+
         const { name, description } = req.query;
 
         let query = {};
 
         if (name) {
-            query.name = new RegExp(name, 'i'); 
+            query.name = new RegExp(name, 'i');
         }
 
         if (description) {
-            query.description = new RegExp(description, 'i'); 
+            query.description = new RegExp(description, 'i');
         }
 
-        
+
         const MenuItems = await MenuItem.find(query).populate('category');
         res.json(MenuItems);
     } catch (error) {
