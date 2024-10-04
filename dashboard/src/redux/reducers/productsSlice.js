@@ -90,11 +90,18 @@ const productsSlice = createSlice({
       })
       .addCase(addProductWithImage.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        console.log('Action payload:', action.payload); // Log action payload
+        // console.log('Action payload:', action.payload); // Log action payload
         state.products = [...state.products, action.payload];
-      });
+      })
+      .addCase(addProductWithImage.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(addProductWithImage.rejected, (state) => {
+        state.status = 'failed';
 
-  },
+      })
+  }
+
 });
 
 export default productsSlice.reducer;

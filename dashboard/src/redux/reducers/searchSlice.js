@@ -4,7 +4,7 @@ import api from '../../api/api';
 
 export const fetchSearch = createAsyncThunk('search/fetchSearch', async (name, { rejectWithValue }) => {
   try {
-    const response = await api.get('fooditems/search', name);
+    const response = await api.get('fooditems/search', { params: { query: name } });
     console.log('response api: ', response)
     return response.data;
 

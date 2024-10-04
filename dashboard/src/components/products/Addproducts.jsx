@@ -10,6 +10,8 @@ import { addProductWithImage } from "../../redux/reducers/productsSlice";
 const Addproducts = () => {
   const dispatch = useDispatch();
   const { categories } = useSelector((state) => state.categories);
+  const { status } = useSelector((state) => state.products);
+
   const [imgPreview, setImgPreview] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
   useEffect(() => {
@@ -201,6 +203,10 @@ const Addproducts = () => {
         >
           Add Product
         </button>
+      </div>
+
+      <div className="bg-slate-500 border-red-500 bg-transparent h-[100px]">
+        <p>{status}</p>
       </div>
     </div>
   );

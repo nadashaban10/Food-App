@@ -32,9 +32,7 @@ const AllProducts = () => {
               <td className="py-4 px-2 hover:bg-slate-300 cursor-pointer">
                 Name
               </td>
-              <td className="py-4 px-2 hover:bg-slate-300 cursor-pointer">
-                <span></span>Product Name
-              </td>
+
               <td className="py-4 px-2 hover:bg-slate-300 cursor-pointer">
                 Category
               </td>
@@ -44,7 +42,7 @@ const AllProducts = () => {
               <td>edit/delete</td>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="font-semibold">
             {products.map((product) => (
               <tr
                 key={product._id}
@@ -52,18 +50,18 @@ const AllProducts = () => {
               >
                 <td className="p-2 gap-2">
                   <Link to={`${product._id}`}>
-                    <div className="flex justify-center items-center gap-2 w-[200px]">
+                    <div className="flex justify-center items-center gap-3 w-auto">
                       <img
                         src="/images/181204_Olive-Magazine_Berenjak_201-9c70cd3.jpg"
                         className="w-[100px] rounded-md"
                       />
 
-                      <div className="w-[100px]">{product.name}</div>
+                      <div className="w-[200px]">{product.name}</div>
                     </div>
                   </Link>
                 </td>
-                <td className="p-2">{product.name}</td>
-                <td className="p-2 font-semibold">{product.category.name}</td>
+
+                <td className="p-2 text-center">{product.category.name}</td>
                 <td className="p-2">{product.price}</td>
                 <td className="">
                   <div className="flex gap-2">
