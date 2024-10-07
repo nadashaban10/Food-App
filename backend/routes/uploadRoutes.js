@@ -1,41 +1,49 @@
 const express = require('express');
 const multer = require('multer');
-const path = require('path');
-const fs = require('fs');
+const cloudinary = require('cloudinary').v2;
+require('dotenv').config(); // Load environment variables from a .env file
 
 const router = express.Router();
 
-// Configure Multer for image uploads
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        const uploadPath = path.join(__dirname, '..', '..', 'food-app/public', 'images');
-
-        // Create the directory if it doesn't exist
-        if (!fs.existsSync(uploadPath)) {
-            fs.mkdirSync(uploadPath, { recursive: true });
-        }
-
-        cb(null, uploadPath);
-    },
-    filename: (req, file, cb) => {
-        cb(null, `${Date.now()}${path.extname(file.originalname)}`);
-    }
+// Cloudinary Configuration
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET, // Correct secret key
 });
 
+// Setup Multer with Memory Storage for direct upload to Cloudinary
+const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 // Route for image upload
 router.post('/', upload.single('imageUrl'), (req, res) => {
-    console.log('heloooooo');
-    if (!req.file) {
-        return res.status(400).json({ message: 'No file uploaded' });
+    try {
+        if (!req.file) {
+            return res.status(400).json({ message: 'No file uploaded' });
+        }
+
+        // Create a stream to upload the image to Cloudinary
+        const uploadStream = cloudinary.uploader.upload_stream(
+            { folder: 'uploads' }, // Optionally, specify a folder in Cloudinary
+            (error, result) => {
+                if (error) {
+                    console.error('Cloudinary Upload Error:', error);  // Log Cloudinary error
+                    return res.status(500).json({ message: 'Cloudinary upload failed', error });
+                }
+                // Respond with the secure URL of the uploaded image
+                return res.status(200).json({ imageUrl: result.secure_url });
+            }
+        );
+
+        // Pass the file buffer to the upload stream
+        uploadStream.end(req.file.buffer);
+
+    } catch (error) {
+        // General error handling
+        console.error('Server Error:', error); // Log server-side error details
+        return res.status(500).json({ message: 'Server error', error: error.message });
     }
-
-    // Generate the URL for the uploaded image
-    const imageUrl = `/images/${req.file.filename}`;
-
-    // Send the URL as a response
-    res.status(200).json({ imageUrl });
 });
 
 module.exports = router;
