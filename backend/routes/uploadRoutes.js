@@ -9,7 +9,7 @@ const router = express.Router();
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET, 
+    api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
 // Multer with Memory Storage to upload Cloudinary
@@ -64,15 +64,15 @@ router.post('/upload-multiple', upload.array('imageUrls', 5), async (req, res) =
                             console.error('Cloudinary Upload Error:', error);
                             reject(error);
                         } else {
-                            resolve(result.secure_url); 
+                            resolve(result.secure_url);
                         }
                     }
                 );
-                uploadStream.end(file.buffer); 
+                uploadStream.end(file.buffer);
             });
         });
 
-        
+
         const imageUrls = await Promise.all(imageUploadPromises);
 
         //the uploaded image URLs
