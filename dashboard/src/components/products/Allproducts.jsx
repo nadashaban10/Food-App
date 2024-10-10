@@ -2,10 +2,19 @@ import { Link } from "react-router-dom";
 import { RiDeleteBin5Fill } from "react-icons/ri";
 import { FaPencil } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchProducts } from "../../redux/reducers/productsSlice";
+import {
+  deleteProduct,
+  fetchProducts,
+} from "../../redux/reducers/productsSlice";
 import { useEffect, useState } from "react";
+import Popup from "../../assets/Popup";
 
 const AllProducts = () => {
+  const [isPopOpen, setIsPopOpen] = useState(false);
+
+  const openPopup = () => setIsPopOpen(true);
+  const closePopup = () => setIsPopOpen(false);
+
   const dispatch = useDispatch();
   const { products, status } = useSelector((state) => state.products);
   const { query, results } = useSelector((state) => state.search);
@@ -24,8 +33,17 @@ const AllProducts = () => {
   }, [dispatch]);
   // console.log("products: ", products);
 
+  const handleDelete = async (id) => {
+    const result = await dispatch(deleteProduct(id));
+    if (result.meta.requestStatus === "fulfilled") {
+      setViewProducts((prevProducts) =>
+        prevProducts.filter((product) => product._id !== id)
+      );
+      closePopup();
+    }
+  };
   if (status === "loading") {
-    return <p>Loading...</p>;
+    return <span className="loader"></span>;
   }
 
   if (status === "failed") {
@@ -53,40 +71,55 @@ const AllProducts = () => {
             </tr>
           </thead>
           <tbody className="font-semibold">
-            {viewProducts.map((product) => (
-              <tr
-                key={product._id}
-                className=" hover:bg-slate-100 border-b cursor-pointer"
-              >
-                <td className="p-2 gap-2">
-                  <Link to={`${product._id}`}>
-                    <div className="flex justify-center items-center gap-3 w-auto">
-                      <img
-                        src="/images/181204_Olive-Magazine_Berenjak_201-9c70cd3.jpg"
-                        className="w-[100px] rounded-md"
-                      />
+            {viewProducts.length == 0 ? (
+              <p className="text-center py-4"> No products </p>
+            ) : (
+              viewProducts.map((product) => (
+                <tr
+                  key={product._id}
+                  className=" hover:bg-slate-100 border-b cursor-pointer"
+                >
+                  <td className="p-2 gap-2">
+                    <Link to={`${product._id}`}>
+                      <div className="flex justify-start items-center gap-3 w-auto">
+                        <img
+                          src={`${product.imageUrl}`}
+                          className="w-[50px] h-[50px] rounded-md"
+                        />
 
-                      <div className="w-[200px]">{product.name}</div>
-                    </div>
-                  </Link>
-                </td>
-
-                <td className="p-2 text-center">{product.category.name}</td>
-                <td className="p-2">{product.price}</td>
-                <td className="">
-                  <div className="flex gap-2">
-                    <Link to={`/products/edit/${product._id}`}>
-                      <span className="hover:text-blue-500 cursor-pointer">
-                        <FaPencil size="20px" />
-                      </span>
+                        <div className="w-[200px]">{product.name}</div>
+                      </div>
                     </Link>
-                    <span className="hover:text-red-500 cursor-pointer">
-                      <RiDeleteBin5Fill size="20px" />
-                    </span>
-                  </div>
-                </td>
-              </tr>
-            ))}
+                  </td>
+
+                  <td className="p-2 text-center">{product.category.name}</td>
+                  <td className="p-2">{product.price}</td>
+                  <td className="">
+                    <div className="flex gap-2">
+                      <Link to={`/products/edit/${product._id}`}>
+                        <span className="hover:text-blue-500 cursor-pointer">
+                          <FaPencil size="20px" />
+                        </span>
+                      </Link>
+                      <span
+                        className="hover:text-red-500 cursor-pointer"
+                        onClick={openPopup}
+                      >
+                        <RiDeleteBin5Fill size="20px" />
+                      </span>
+
+                      {isPopOpen && (
+                        <Popup
+                          onClose={closePopup}
+                          name={product.name}
+                          clickFunc={() => handleDelete(product._id)}
+                        ></Popup>
+                      )}
+                    </div>
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>

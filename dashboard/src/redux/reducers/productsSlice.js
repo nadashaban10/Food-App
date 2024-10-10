@@ -30,8 +30,26 @@ export const fetchProducts = createAsyncThunk('products/fetchProducts', async ()
     return error.message;
   }
 });
-// Get product by id all products
-export const getProductById = createAsyncThunk('products/getproductbyId', async (id) => {
+
+
+
+// Delete  product
+export const deleteProduct = createAsyncThunk('products/deleteProduct', async (id) => {
+
+  try {
+    const response = await api.delete(`fooditems/${id}`);
+    console.log('API response:', response.data); // Log API response
+    return response.data;
+  } catch (error) {
+    console.error('API error:', error.message); // Log any errors
+    return error.message;
+  }
+});
+
+
+
+// Get product by id
+export const getProductById = createAsyncThunk('products/getProductById', async (id) => {
 
   try {
     const response = await api.get(`fooditems/${id}`);
@@ -48,12 +66,18 @@ export const getProductById = createAsyncThunk('products/getproductbyId', async 
 // Add a new product with image upload
 export const addProductWithImage = createAsyncThunk('products/create', async (info, { rejectWithValue, fulfillWithValue }) => {
   try {
-    console.log('image:', info.get('imageUrl'));
+
     const uploadResponse = await api.post('/uploads/', info, config);
-    const imageUrl = uploadResponse.data.imageUrl; // Get the image URL from the response
-    console.log('imageURL: ', imageUrl)
+    const imageUrl = uploadResponse.data.imageUrl;
+
+    const uploadMultiple = await api.post('/uploads/upload-multiple', info, config);
+    const imageUrls = uploadMultiple.data.imageUrls;
+
+
+
     // set new image url
     info.set('imageUrl', imageUrl);
+    info.set('imageUrls', imageUrls);
     const formDataObj = Object.fromEntries(info.entries());
 
 

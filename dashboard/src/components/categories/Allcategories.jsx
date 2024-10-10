@@ -44,7 +44,7 @@ const AllCategories = () => {
                 <td className="p-2">{category.description}</td>
                 <td className="p-2">
                   <img
-                    src={`.${category.imageUrl}`}
+                    src={`${category.imageUrl}`}
                     className="w-[75px] h-[75px]"
                     alt={category.name}
                   />

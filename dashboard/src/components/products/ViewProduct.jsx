@@ -16,11 +16,16 @@ const ViewProduct = () => {
   }, [dispatch, id]);
 
   console.log("selected: ", product);
+  console.log("id: ", id);
+
+  if (!product) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <div>
       <p>{`${id}`}</p>
-      {/* <h1>{product.name}</h1> */}
+      <h1>{product.name}</h1>
       {/* <h1>{product.price}</h1> */}
     </div>
   );
