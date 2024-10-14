@@ -9,10 +9,11 @@ const router = express.Router();
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET, 
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+    timeout: 60000, // Set Cloudinary timeout to 60 seconds
 });
 
-// Multer with Memory Storage to upload Cloudinary
+// Multer with Memory Storage to upload files directly to Cloudinary
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
@@ -25,10 +26,10 @@ router.post('/', upload.single('imageUrl'), (req, res) => {
 
         // Create a stream to upload the image to Cloudinary
         const uploadStream = cloudinary.uploader.upload_stream(
-            { folder: 'uploads' }, //specify a folder in Cloudinary
+            { folder: 'uploads' }, // Specify a folder in Cloudinary
             (error, result) => {
                 if (error) {
-                    console.error('Cloudinary Upload Error:', error);  // Log Cloudinary error
+                    console.error('Cloudinary Upload Error:', error); // Log Cloudinary error
                     return res.status(500).json({ message: 'Cloudinary upload failed', error });
                 }
                 // URL of the uploaded image
@@ -58,24 +59,23 @@ router.post('/upload-multiple', upload.array('imageUrls', 5), async (req, res) =
         const imageUploadPromises = req.files.map(file => {
             return new Promise((resolve, reject) => {
                 const uploadStream = cloudinary.uploader.upload_stream(
-                    { folder: 'uploads' }, //specify a folder in Cloudinary
+                    { folder: 'uploads' }, // Specify a folder in Cloudinary
                     (error, result) => {
                         if (error) {
                             console.error('Cloudinary Upload Error:', error);
                             reject(error);
                         } else {
-                            resolve(result.secure_url); 
+                            resolve(result.secure_url); // Resolve with the secure URL
                         }
                     }
                 );
-                uploadStream.end(file.buffer); 
+                uploadStream.end(file.buffer); // Pass the buffer to the upload stream
             });
         });
 
-        
-        const imageUrls = await Promise.all(imageUploadPromises);
+        const imageUrls = await Promise.all(imageUploadPromises); // Wait for all uploads to finish
 
-        //the uploaded image URLs
+        // Respond with the uploaded image URLs
         return res.status(200).json({
             message: 'Images uploaded successfully',
             imageUrls: imageUrls,

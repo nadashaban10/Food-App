@@ -91,9 +91,9 @@ const Addproducts = () => {
       formData.append("imageUrl", selectedFile); // Append the file
     }
 
-    if (selectedFiles) {
-      formData.append("imageUrls", selectedFiles); // Append the images
-    }
+    // if (selectedFiles) {
+    //   formData.append("imageUrls", selectedFiles); // Append the images
+    // } 
     if (selectedFiles.length > 0) {
       selectedFiles.forEach((file) => formData.append("imageUrls", file));
     }

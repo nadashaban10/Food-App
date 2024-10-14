@@ -64,32 +64,68 @@ export const getProductById = createAsyncThunk('products/getProductById', async 
 
 
 // Add a new product with image upload
+// export const addProductWithImage = createAsyncThunk('products/create', async (info, { rejectWithValue, fulfillWithValue }) => {
+//   try {
+
+//     const uploadResponse = await api.post('/uploads/', info, config);
+//     const imageUrl = uploadResponse.data.imageUrl;
+
+//     const uploadMultiple = await api.post('/uploads/upload-multiple', info, config);
+//     const imageUrls = uploadMultiple.data.imageUrls;
+
+
+
+//     // set new image url
+//     info.set('imageUrl', imageUrl);
+//     info.set('imageUrls', imageUrls);
+//     const formDataObj = Object.fromEntries(info.entries());
+
+
+//     const { data } = await api.post('fooditems/', formDataObj, config2);
+//     console.log('Product API response:', data); // Log API response
+
+//     return fulfillWithValue(data);
+//   } catch (error) {
+//     console.error('API error:', error.message);
+//     return rejectWithValue(error.response.data);
+//   }
+// });
+
 export const addProductWithImage = createAsyncThunk('products/create', async (info, { rejectWithValue, fulfillWithValue }) => {
   try {
+    // upload the single image 
+    const singleImageFormData = new FormData();
+    singleImageFormData.append('imageUrl', info.get('imageUrl'));  
 
-    const uploadResponse = await api.post('/uploads/', info, config);
+    const uploadResponse = await api.post('/uploads/', singleImageFormData, config);
     const imageUrl = uploadResponse.data.imageUrl;
 
-    const uploadMultiple = await api.post('/uploads/upload-multiple', info, config);
+    // upload multiple images 
+    const multipleImageFormData = new FormData();
+    const imageFiles = info.getAll('imageUrls');  
+
+    imageFiles.forEach((file) => {
+      multipleImageFormData.append('imageUrls', file);
+    });
+
+    const uploadMultiple = await api.post('/uploads/upload-multiple', multipleImageFormData, config);
     const imageUrls = uploadMultiple.data.imageUrls;
 
-
-
-    // set new image url
-    info.set('imageUrl', imageUrl);
-    info.set('imageUrls', imageUrls);
-    const formDataObj = Object.fromEntries(info.entries());
-
-
-    const { data } = await api.post('fooditems/', formDataObj, config2);
-    console.log('Product API response:', data); // Log API response
+    
+    const productFormData = new FormData(info);  
+    productFormData.set('imageUrl', imageUrl);   
+    productFormData.set('imageUrls', imageUrls); 
+    
+    const { data } = await api.post('fooditems/', productFormData, config2);
+    console.log('Product API response:', data); 
 
     return fulfillWithValue(data);
   } catch (error) {
     console.error('API error:', error.message);
-    return rejectWithValue(error.response.data);
+    return rejectWithValue(error.response?.data || error.message);
   }
 });
+
 
 
 const productsSlice = createSlice({
