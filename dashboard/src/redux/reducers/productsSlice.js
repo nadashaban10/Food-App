@@ -88,10 +88,22 @@ export const addProductWithImage = createAsyncThunk('products/create', async (in
     const uploadMultiple = await api.post('/uploads/upload-multiple', multipleImageFormData, config);
     const imageUrls = uploadMultiple.data.imageUrls;
 
+    
+    // if (typeof imageUrls === 'string') {
+    //   imageUrls = JSON.parse(imageUrls);
+    // }
 
-    // const productFormData = new FormData(info);  
+    
+    //console.log('imageUrls is an array:', imageUrls);
+
+
+   
     info.set('imageUrl', imageUrl);
     info.set('imageUrls', imageUrls);
+
+    imageUrls.forEach((url, index) => {
+      info.append(`imageUrls[${index}]`, url);  
+    });
 
 
     const { data } = await api.post('fooditems/', info, config2);
