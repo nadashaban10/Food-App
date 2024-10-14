@@ -7,11 +7,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchCategories } from "../../redux/reducers/categoriesSlice";
 import { useEffect } from "react";
 import { addProductWithImage } from "../../redux/reducers/productsSlice";
+import Warning from "../../assets/Warning";
 
 const Addproducts = () => {
   const dispatch = useDispatch();
   const { categories } = useSelector((state) => state.categories);
-  const { status } = useSelector((state) => state.products);
+  const { loadingAddProduct } = useSelector((state) => state.products);
 
   const [imgPreview, setImgPreview] = useState(null);
   const [imgsPreview, setImgsPreview] = useState([]);
@@ -96,7 +97,7 @@ const Addproducts = () => {
 
     // if (selectedFiles) {
     //   formData.append("imageUrls", selectedFiles); // Append the images
-    // } 
+    // }
     if (selectedFiles.length > 0) {
       selectedFiles.forEach((file) => formData.append("imageUrls", file));
     }
@@ -288,10 +289,17 @@ const Addproducts = () => {
           Add Product
         </button>
       </div>
-
-      <div className="bg-slate-500 border-red-500 bg-transparent h-[100px]">
+      {/* {loadingAddProduct === "loading" && <span className="loader"></span>} */}
+      {loadingAddProduct != "idle" && (
+        <Warning
+          header={loadingAddProduct}
+          msgType={loadingAddProduct}
+          content={""}
+        />
+      )}
+      {/* <div className="bg-slate-500 border-red-500 bg-transparent h-[100px]">
         <p>{status}</p>
-      </div>
+      </div> */}
     </div>
   );
 };

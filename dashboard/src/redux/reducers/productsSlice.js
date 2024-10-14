@@ -14,8 +14,11 @@ const config2 = {
 
 const initialState = {
   products: [],
-  selectedProduct: [],
-  status: 'idle',
+  selectedProduct: null,
+  loadingProducts: 'idle',
+  loadingSelectedProduct: 'idle',
+  loadingAddProduct: 'idle',
+  error: null,
 };
 
 // Fetch all products
@@ -63,46 +66,20 @@ export const getProductById = createAsyncThunk('products/getProductById', async 
 
 
 
-// Add a new product with image upload
-// export const addProductWithImage = createAsyncThunk('products/create', async (info, { rejectWithValue, fulfillWithValue }) => {
-//   try {
-
-//     const uploadResponse = await api.post('/uploads/', info, config);
-//     const imageUrl = uploadResponse.data.imageUrl;
-
-//     const uploadMultiple = await api.post('/uploads/upload-multiple', info, config);
-//     const imageUrls = uploadMultiple.data.imageUrls;
-
-
-
-//     // set new image url
-//     info.set('imageUrl', imageUrl);
-//     info.set('imageUrls', imageUrls);
-//     const formDataObj = Object.fromEntries(info.entries());
-
-
-//     const { data } = await api.post('fooditems/', formDataObj, config2);
-//     console.log('Product API response:', data); // Log API response
-
-//     return fulfillWithValue(data);
-//   } catch (error) {
-//     console.error('API error:', error.message);
-//     return rejectWithValue(error.response.data);
-//   }
-// });
-
+// Add New Product with image
 export const addProductWithImage = createAsyncThunk('products/create', async (info, { rejectWithValue, fulfillWithValue }) => {
   try {
+
     // upload the single image 
     const singleImageFormData = new FormData();
-    singleImageFormData.append('imageUrl', info.get('imageUrl'));  
+    singleImageFormData.append('imageUrl', info.get('imageUrl'));
 
     const uploadResponse = await api.post('/uploads/', singleImageFormData, config);
     const imageUrl = uploadResponse.data.imageUrl;
 
     // upload multiple images 
     const multipleImageFormData = new FormData();
-    const imageFiles = info.getAll('imageUrls');  
+    const imageFiles = info.getAll('imageUrls');
 
     imageFiles.forEach((file) => {
       multipleImageFormData.append('imageUrls', file);
@@ -111,13 +88,14 @@ export const addProductWithImage = createAsyncThunk('products/create', async (in
     const uploadMultiple = await api.post('/uploads/upload-multiple', multipleImageFormData, config);
     const imageUrls = uploadMultiple.data.imageUrls;
 
-    
-    const productFormData = new FormData(info);  
-    productFormData.set('imageUrl', imageUrl);   
-    productFormData.set('imageUrls', imageUrls); 
-    
-    const { data } = await api.post('fooditems/', productFormData, config2);
-    console.log('Product API response:', data); 
+
+    // const productFormData = new FormData(info);  
+    info.set('imageUrl', imageUrl);
+    info.set('imageUrls', imageUrls);
+
+
+    const { data } = await api.post('fooditems/', info, config2);
+    console.log('Product API response:', data);
 
     return fulfillWithValue(data);
   } catch (error) {
@@ -127,37 +105,54 @@ export const addProductWithImage = createAsyncThunk('products/create', async (in
 });
 
 
-
 const productsSlice = createSlice({
   name: 'products',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
+
+      // Fetch All Products
       .addCase(fetchProducts.pending, (state) => {
-        state.status = 'loading';
+        state.loadingProducts = 'loading';
       })
       .addCase(fetchProducts.fulfilled, (state, action) => {
-        state.status = 'succeeded';
+        state.loadingProducts = 'succeeded';
         state.products = action.payload;
       })
-      .addCase(fetchProducts.rejected, (state) => {
-        state.status = 'failed';
+      .addCase(fetchProducts.rejected, (state, action) => {
+        state.loadingProducts = 'failed';
+        state.error = action.payload
       })
+
+      // Get Product by id
       .addCase(getProductById.fulfilled, (state, action) => {
-        state.status = 'succeeded';
+        state.loadingSelectedProduct = 'succeeded';
         state.selectedProduct = action.payload;
       })
+      .addCase(getProductById.pending, (state) => {
+        state.loadingSelectedProduct = 'loading';
+        state.error = null
+
+      })
+      .addCase(getProductById.rejected, (state, action) => {
+        state.loadingSelectedProduct = 'failed';
+        state.error = action.payload;
+      })
+
+      // Add Product with image
       .addCase(addProductWithImage.fulfilled, (state, action) => {
-        state.status = 'succeeded';
+        state.loadingAddProduct = 'succeeded';
         // console.log('Action payload:', action.payload); // Log action payload
         state.products = [...state.products, action.payload];
       })
       .addCase(addProductWithImage.pending, (state) => {
-        state.status = 'loading';
+        state.loadingAddProduct = 'loading';
+        state.error = null
       })
-      .addCase(addProductWithImage.rejected, (state) => {
-        state.status = 'failed';
+      .addCase(addProductWithImage.rejected, (state, action) => {
+        state.loadingAddProduct = 'failed';
+        state.error = action.payload
 
       })
   }

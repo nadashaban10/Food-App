@@ -8,15 +8,21 @@ import {
 } from "../../redux/reducers/productsSlice";
 import { useEffect, useState } from "react";
 import Popup from "../../assets/Popup";
+import ViewProduct from "./ViewProduct";
+import Warning from "../../assets/Warning";
 
 const AllProducts = () => {
-  const [isPopOpen, setIsPopOpen] = useState(false);
+  const [deletePop, setDeletePop] = useState(null);
+  const [selectedToFullView, setSelectedToFullView] = useState(null);
 
-  const openPopup = () => setIsPopOpen(true);
-  const closePopup = () => setIsPopOpen(false);
+  const openFullView = (id) => setSelectedToFullView(id);
+  const closeFullView = () => setSelectedToFullView(null);
+
+  const openPopup = (id) => setDeletePop(id);
+  const closePopup = () => setDeletePop(null);
 
   const dispatch = useDispatch();
-  const { products, status } = useSelector((state) => state.products);
+  const { products, loadingProducts } = useSelector((state) => state.products);
   const { query, results } = useSelector((state) => state.search);
   const [viewProducts, setViewProducts] = useState(products);
   // Update viewProducts based on query
@@ -42,11 +48,11 @@ const AllProducts = () => {
       closePopup();
     }
   };
-  if (status === "loading") {
+  if (loadingProducts === "loading") {
     return <span className="loader"></span>;
   }
 
-  if (status === "failed") {
+  if (loadingProducts === "failed") {
     return <p>Failed to load products.</p>;
   }
 
@@ -80,16 +86,19 @@ const AllProducts = () => {
                   className=" hover:bg-slate-100 border-b cursor-pointer"
                 >
                   <td className="p-2 gap-2">
-                    <Link to={`${product._id}`}>
-                      <div className="flex justify-start items-center gap-3 w-auto">
-                        <img
-                          src={`${product.imageUrl}`}
-                          className="w-[50px] h-[50px] rounded-md"
-                        />
+                    {/* <Link to={`${product._id}`}> */}
+                    <div
+                      className="flex justify-start items-center gap-3 w-auto"
+                      onClick={() => openFullView(product._id)}
+                    >
+                      <img
+                        src={`${product.imageUrl}`}
+                        className="w-[50px] h-[50px] rounded-md"
+                      />
 
-                        <div className="w-[200px]">{product.name}</div>
-                      </div>
-                    </Link>
+                      <div className="w-[200px]">{product.name}</div>
+                    </div>
+                    {/* </Link> */}
                   </td>
 
                   <td className="p-2 text-center">{product.category.name}</td>
@@ -103,16 +112,26 @@ const AllProducts = () => {
                       </Link>
                       <span
                         className="hover:text-red-500 cursor-pointer"
-                        onClick={openPopup}
+                        onClick={() => openPopup(product._id)}
                       >
                         <RiDeleteBin5Fill size="20px" />
                       </span>
 
-                      {isPopOpen && (
+                      {/* Handle View Product ========== */}
+                      {selectedToFullView && (
+                        <ViewProduct
+                          onClose={closeFullView}
+                          id={selectedToFullView}
+                        />
+                      )}
+
+                      {/* Handle Delete Product */}
+
+                      {deletePop && (
                         <Popup
                           onClose={closePopup}
                           name={product.name}
-                          clickFunc={() => handleDelete(product._id)}
+                          clickFunc={() => handleDelete(deletePop)}
                         ></Popup>
                       )}
                     </div>
