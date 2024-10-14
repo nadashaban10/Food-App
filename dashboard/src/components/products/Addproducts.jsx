@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { IoAddCircle } from "react-icons/io5";
-
+import { FaCloudUploadAlt } from "react-icons/fa";
 import { FaImages } from "react-icons/fa";
 import { IoIosCloseCircle } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
@@ -49,18 +49,21 @@ const Addproducts = () => {
     }
   };
   const onImagesChange = (e) => {
-    const files = Array.from(e.target.files); // Convert FileList to an array
+    const newFiles = Array.from(e.target.files); // Convert FileList to an array
 
-    if (files.length > 0) {
-      const previews = files.map((file) => URL.createObjectURL(file)); // Map each file to a preview URL
+    if (newFiles.length > 0) {
+      // Combine old files with new files
+      const updatedFiles = [...selectedFiles, ...newFiles];
+
+      const previews = updatedFiles.map((file) => URL.createObjectURL(file)); // Map each file to a preview URL
       setImgsPreview(previews);
-      setSelectedFiles(files); // Set array of files
-      console.log("Images Preview: ", previews);
+      setSelectedFiles(updatedFiles); // Set array of files
+      // console.log("Images Preview: ", previews);
     }
   };
 
   const handleRemoveImg = (e) => {
-    e.stopPropagation(); // Prevent triggering the file picker
+    e.stopPropagation();
     setImgPreview(null);
     setSelectedFile(null);
 
@@ -117,7 +120,7 @@ const Addproducts = () => {
               onChange={handleInput}
               value={productInfo.name}
               type="text"
-              className="w-full px-3 py-2 border border-slate-200 outline-none focus:border-green-500 "
+              className="w-full px-3 py-2 border border-slate-200 outline-none focus:border-green-500 bg-[#eee] rounded-md"
               name="name"
               id="name"
               placeholder="Product name"
@@ -125,7 +128,7 @@ const Addproducts = () => {
           </div>
           <div className="flex flex-col gap-1 m-2 w-full">
             <select
-              className="border px-3 py-2"
+              className="border px-3 py-2 bg-[#eee] rounded-md"
               name="category"
               value={productInfo.category}
               onChange={handleInput}
@@ -144,7 +147,7 @@ const Addproducts = () => {
               onChange={handleInput}
               value={productInfo.price}
               type="text"
-              className="w-full px-3 py-2 border border-slate-200 outline-none focus:border-green-500 "
+              className="w-full px-3 py-2 border border-slate-200 outline-none focus:border-green-500 bg-[#eee] rounded-md "
               name="price"
               id="price"
               placeholder="Price"
@@ -156,7 +159,7 @@ const Addproducts = () => {
               onChange={handleInput}
               value={productInfo.discount}
               type="text"
-              className="w-full px-3 py-2 border border-slate-200 outline-none focus:border-green-500 "
+              className="w-full px-3 py-2 border border-slate-200 outline-none focus:border-green-500 bg-[#eee] rounded-md "
               name="discount"
               id="discount"
               placeholder="Discount %"
@@ -189,7 +192,7 @@ const Addproducts = () => {
         </div>
         <div className="lg:w-6/12">
           <p className="pb-3">Main image</p>
-          <div className=" h-[300px] flex md:flex-col justify-center items-center md:gap-2 gap-5 bg-slate-100">
+          <div className=" h-[300px] flex md:flex-col justify-center items-center md:gap-2 gap-5 bg-slate-100  border-dashed border-2 rounded-md">
             <div className="p-5 rounded-3xl flex justify-center items-center h-full">
               <div>
                 <div className="text-slate-400  text-center flex justify-center">
@@ -198,15 +201,15 @@ const Addproducts = () => {
                       <div className="relative">
                         <img
                           src={imgPreview}
-                          className="w-[200px] h-[200px]"
+                          className="w-[200px] h-[200px] object-cover rounded-md shadow-md"
                           alt="Preview"
                         />
-                        <span
+                        <div
                           className="absolute -top-4 -right-[40px] cursor-pointer"
                           onClick={handleRemoveImg}
                         >
                           <IoIosCloseCircle size="30px" />
-                        </span>
+                        </div>
                       </div>
                     ) : (
                       <FaImages size="100px" />
@@ -231,29 +234,11 @@ const Addproducts = () => {
           </div>
           <p className="p-3">Other Images</p>
 
-          <div className="h-[200px] w-[200px] flex md:flex-col justify-center items-center md:gap-2 gap-5 rounded-md bg-slate-100">
+          <div className="h-[100px] w-[100px] flex md:flex-col justify-center items-center md:gap-2 gap-5 rounded-md bg-slate-100 border-dashed border-2">
             <div className="text-center justify-center items-center">
               <div className="text-slate-400">
                 <label htmlFor="imageUrls" className="cursor-pointer">
-                  {imgsPreview.length > 0 ? (
-                    imgsPreview.map((preview, index) => (
-                      <div key={index} className="relative">
-                        <img
-                          src={preview}
-                          className="w-[100px] h-[100px]"
-                          alt={`Preview ${index}`}
-                        />
-                        <span
-                          className="absolute -top-4 -right-[40px] cursor-pointer"
-                          onClick={() => handleRemoveImgs(index)}
-                        >
-                          <IoIosCloseCircle size="30px" />
-                        </span>
-                      </div>
-                    ))
-                  ) : (
-                    <FaImages size="100px" />
-                  )}
+                  <FaCloudUploadAlt size="40px" color="#94a3b8" />
                 </label>
                 <input
                   type="file"
@@ -264,12 +249,35 @@ const Addproducts = () => {
                   className="hidden"
                 />
               </div>
-              <div className=" flex justify-center items-center pt-4">
-                {/* <p className="text-center py-2">Add Image</p> */}
-                <IoAddCircle size="40px" color="#94a3b8" />
-              </div>
+              {/* <div className=" flex justify-center items-center pt-4">
+                 <p className="text-center py-2">Add Image</p> 
+                
+              </div> */}
             </div>
           </div>
+
+          {imgsPreview.length > 0 && (
+            <div className="flex justify-start flex-wrap mt-5 rounded-md  bg-slate-100 items-center gap-5 p-4">
+              {imgsPreview.map((preview, index) => (
+                <div
+                  key={index}
+                  className="relative rounded-md p-2 flex justify-center"
+                >
+                  <img
+                    src={preview}
+                    className="w-[100px] h-[100px] shadow-md object-cover hover:scale-110 duration-500 transition-all rounded-md"
+                    alt={`Preview ${index}`}
+                  />
+                  <span
+                    className="absolute -top-1 -right-[5px] cursor-pointer text-slate-400"
+                    onClick={() => handleRemoveImgs(index)}
+                  >
+                    <IoIosCloseCircle size="25px" />
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </form>
       <div className="flex justify-end mt-6">
