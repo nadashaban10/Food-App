@@ -71,3 +71,7 @@ html {
     transform: rotate(360deg);
   }
 }
+
+textarea {
+  resize: vertical; /* Allow only vertical resizing */
+}

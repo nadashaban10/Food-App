@@ -6,7 +6,10 @@ import { IoIosCloseCircle } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCategories } from "../../redux/reducers/categoriesSlice";
 import { useEffect } from "react";
-import { addProductWithImage } from "../../redux/reducers/productsSlice";
+import {
+  addProductWithImage,
+  resetLoadingState,
+} from "../../redux/reducers/productsSlice";
 import Warning from "../../assets/Warning";
 
 const Addproducts = () => {
@@ -18,6 +21,10 @@ const Addproducts = () => {
   const [imgsPreview, setImgsPreview] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
   const [selectedFiles, setSelectedFiles] = useState([]);
+
+  const closeWarning = () => {
+    dispatch(resetLoadingState());
+  };
 
   useEffect(() => {
     dispatch(fetchCategories());
@@ -41,6 +48,7 @@ const Addproducts = () => {
       [e.target.name]: e.target.value,
     });
   };
+
   const onImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -102,16 +110,10 @@ const Addproducts = () => {
       selectedFiles.forEach((file) => formData.append("imageUrls", file));
     }
     dispatch(addProductWithImage(formData));
-    console.log("form data: ", formData);
   };
-  // const save = (e) => {
-  //   e.preventDefault();
-  //   const { name, category, price, image, description } = productInfo;
-  // };
 
-  console.log("product info sent: ", productInfo);
   return (
-    <div className="bg-white text-slate-800 p-8 rounded-md shadow-sm">
+    <div className="bg-white overflow-hidden text-slate-800 p-8 rounded-md shadow-sm">
       <strong className="text-xl"> Add new Product</strong>
       <form className="flex flex-wrap lg:flex-nowrap  gap-10">
         <div className="lg:w-6/12 w-full">
@@ -147,7 +149,7 @@ const Addproducts = () => {
             <input
               onChange={handleInput}
               value={productInfo.price}
-              type="text"
+              type="number"
               className="w-full px-3 py-2 border border-slate-200 outline-none focus:border-green-500 bg-[#eee] rounded-md "
               name="price"
               id="price"
@@ -289,12 +291,19 @@ const Addproducts = () => {
           Add Product
         </button>
       </div>
-      {/* {loadingAddProduct === "loading" && <span className="loader"></span>} */}
+
       {loadingAddProduct != "idle" && (
         <Warning
           header={loadingAddProduct}
           msgType={loadingAddProduct}
-          content={""}
+          content={
+            loadingAddProduct === "succeeded"
+              ? "Your product was added successfully."
+              : loadingAddProduct === "loading"
+              ? "Please wait while your product is being uploaded."
+              : "Product upload failed. Please try again."
+          }
+          onClose={closeWarning}
         />
       )}
       {/* <div className="bg-slate-500 border-red-500 bg-transparent h-[100px]">

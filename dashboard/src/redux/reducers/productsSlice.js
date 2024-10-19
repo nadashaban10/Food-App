@@ -88,21 +88,21 @@ export const addProductWithImage = createAsyncThunk('products/create', async (in
     const uploadMultiple = await api.post('/uploads/upload-multiple', multipleImageFormData, config);
     const imageUrls = uploadMultiple.data.imageUrls;
 
-    
+
     // if (typeof imageUrls === 'string') {
     //   imageUrls = JSON.parse(imageUrls);
     // }
 
-    
+
     //console.log('imageUrls is an array:', imageUrls);
 
 
-   
+
     info.set('imageUrl', imageUrl);
     info.set('imageUrls', imageUrls);
 
     imageUrls.forEach((url, index) => {
-      info.append(`imageUrls[${index}]`, url);  
+      info.append(`imageUrls[${index}]`, url);
     });
 
 
@@ -120,7 +120,11 @@ export const addProductWithImage = createAsyncThunk('products/create', async (in
 const productsSlice = createSlice({
   name: 'products',
   initialState,
-  reducers: {},
+  reducers: {
+    resetLoadingState(state) {
+      state.loadingAddProduct = 'idle';
+    },
+  },
   extraReducers: (builder) => {
     builder
 
@@ -170,5 +174,7 @@ const productsSlice = createSlice({
   }
 
 });
+
+export const { resetLoadingState } = productsSlice.actions;
 
 export default productsSlice.reducer;
