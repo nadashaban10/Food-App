@@ -170,11 +170,30 @@ export const addProductWithImage = createAsyncThunk('products/create', async (in
     const imageUrls = uploadMultiple.data.imageUrls;
     const public_ids = uploadMultiple.data.public_ids;
 
+<<<<<<< HEAD
     // Set imageUrl, imageUrls, public_id, and public_ids to the info object
     info.set('imageUrl', imageUrl);
     info.set('public_id', public_id);
     info.set('imageUrls', JSON.stringify(imageUrls));
     info.set('public_ids', JSON.stringify(public_ids));
+=======
+
+    // if (typeof imageUrls === 'string') {
+    //   imageUrls = JSON.parse(imageUrls);
+    // }
+
+
+    //console.log('imageUrls is an array:', imageUrls);
+
+
+
+    info.set('imageUrl', imageUrl);
+    info.set('imageUrls', imageUrls);
+
+    imageUrls.forEach((url, index) => {
+      info.append(`imageUrls[${index}]`, url);
+    });
+>>>>>>> edee8cf08d4e4726e08264a3be0ae840a6f60e6e
 
 
     const { data } = await api.post('fooditems/', info, config2);
@@ -191,7 +210,11 @@ export const addProductWithImage = createAsyncThunk('products/create', async (in
 const productsSlice = createSlice({
   name: 'products',
   initialState,
-  reducers: {},
+  reducers: {
+    resetLoadingState(state) {
+      state.loadingAddProduct = 'idle';
+    },
+  },
   extraReducers: (builder) => {
     builder
 
@@ -241,5 +264,7 @@ const productsSlice = createSlice({
   }
 
 });
+
+export const { resetLoadingState } = productsSlice.actions;
 
 export default productsSlice.reducer;

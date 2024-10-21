@@ -31,8 +31,8 @@ const Side = () => {
       path: "/products",
       icon: <IoCubeOutline size="25px" />,
       submenu: [
+        { name: "All Product", path: "/products/" },
         { name: "Add Product", path: "/products/add" },
-        { name: "Edit Product", path: "/products/edit" },
       ],
     },
     {

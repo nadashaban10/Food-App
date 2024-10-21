@@ -9,7 +9,7 @@ import {
 import { useEffect, useState } from "react";
 import Popup from "../../assets/Popup";
 import ViewProduct from "./ViewProduct";
-import Warning from "../../assets/Warning";
+// import Warning from "../../assets/Warning";
 
 const AllProducts = () => {
   const [deletePop, setDeletePop] = useState(null);
@@ -130,7 +130,7 @@ const AllProducts = () => {
                       {deletePop && (
                         <Popup
                           onClose={closePopup}
-                          name={product.name}
+                          id={deletePop}
                           clickFunc={() => handleDelete(deletePop)}
                         ></Popup>
                       )}

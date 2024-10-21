@@ -26,7 +26,7 @@ const Warning = ({ header, msgType, content, onClose }) => {
   if (!warningType) return null; // Return nothing if msgType is not found
   return (
     <div
-      className="bg-transparent p-5 border-b-4 rounded-md relative"
+      className="bg-transparent w-[40%] z-[999] absolute top-[40px] right-[40px]  p-5 border-b-4 rounded-md"
       style={{
         backgroundColor: warningType.mainColor,
         borderColor: warningType.accentColor,
