@@ -37,23 +37,31 @@ const MenuItemSchema = new mongoose.Schema({
       type: String,
     },
   ],
+  public_id: {
+    type: String,  
+  },
+  public_ids: [
+    {
+      type: String,  
+    }
+  ],
   sizeOptions: {
     halfKilo: {
       type: Number,
       default: function () {
-        return this.price / 2; //  half kilo price
+        return this.price / 2;
       },
     },
     quarterKilo: {
       type: Number,
       default: function () {
-        return this.price / 4; //  quarter kilo price
+        return this.price / 4;
       },
     },
     thirdKilo: {
       type: Number,
       default: function () {
-        return this.price / 3; //  1/3 kilo price
+        return this.price / 3;
       },
     },
   },

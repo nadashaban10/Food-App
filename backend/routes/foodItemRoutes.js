@@ -65,13 +65,44 @@ router.get('/:id', async (req, res) => {
     }
 });
 
+// // Create a new food item
+// router.post('/', async (req, res) => {
+//     const MenuItems = new MenuItem(req.body);
+//     try {
+//         const newMenuItem = await MenuItems.save();
+//         res.status(201).json(newMenuItem);
+//     } catch (error) {
+//         res.status(400).json({ message: error.message });
+//     }
+// });
+
 // Create a new food item
 router.post('/', async (req, res) => {
-    const MenuItems = new MenuItem(req.body);
     try {
-        const newMenuItem = await MenuItems.save();
-        res.status(201).json(newMenuItem);
+        // Check if `public_ids` and `imageUrls` are present and valid
+        console.log("Request Body: ", req.body);
+        const public_ids = req.body.public_ids ? (Array.isArray(req.body.public_ids) ? req.body.public_ids : JSON.parse(req.body.public_ids)) : [];
+        const imageUrls = req.body.imageUrls ? (Array.isArray(req.body.imageUrls) ? req.body.imageUrls : JSON.parse(req.body.imageUrls)) : [];
+        
+        
+        // Create a new object with parsed data
+        const newMenuItemData = {
+            ...req.body,  // Copy other fields from the request body
+            public_ids: public_ids,
+            imageUrls: imageUrls,  // Replace the string with the parsed array
+        };
+
+        
+        // Create a new MenuItem instance using the parsed data
+        const newMenuItem = new MenuItem(newMenuItemData);
+        
+        // Save the new menu item to the database
+        const savedMenuItem = await newMenuItem.save();
+        
+        // Return the newly created menu item
+        res.status(201).json(savedMenuItem);
     } catch (error) {
+        // Handle any errors during the save process
         res.status(400).json({ message: error.message });
     }
 });

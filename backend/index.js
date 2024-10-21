@@ -21,6 +21,8 @@ mongoose.connect(process.env.MONGODB_URL)
 
 // Middleware
 app.use(bodyParser.json());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(morgan('tiny')); // Log requests
 app.use(cors());
 app.use('/public', express.static(path.join(__dirname, 'public'))); // Serve static files

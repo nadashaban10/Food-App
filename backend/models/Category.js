@@ -12,13 +12,21 @@ const categorySchema = new Schema({
         required: false,
     },
     imageUrl: {
-        type: String,  // Single image URL
-      },
-      imageUrls: [
+        type: String,  
+    },
+    imageUrls: [
         {
-          type: String,  // Array of multiple image URLs
+            type: String,  
         }
-      ]
+    ],
+    public_id: {
+        type: String,  
+      },
+      public_ids: [
+        {
+          type: String,  
+        }
+      ],
 });
 
 module.exports = mongoose.model('Category', categorySchema);
