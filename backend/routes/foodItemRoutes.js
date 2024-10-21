@@ -65,16 +65,7 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-// // Create a new food item
-// router.post('/', async (req, res) => {
-//     const MenuItems = new MenuItem(req.body);
-//     try {
-//         const newMenuItem = await MenuItems.save();
-//         res.status(201).json(newMenuItem);
-//     } catch (error) {
-//         res.status(400).json({ message: error.message });
-//     }
-// });
+
 
 // Create a new food item
 router.post('/', async (req, res) => {

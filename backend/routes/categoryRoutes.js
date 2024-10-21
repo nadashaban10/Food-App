@@ -26,15 +26,55 @@ router.get('/:id', async (req, res) => {
 });
 
 // Create a new category
+// router.post('/', async (req, res) => {
+//     const category = new Category(req.body);
+//     try {
+//         const newCategory = await category.save();
+//         res.status(201).json(newCategory);
+//     } catch (error) {
+//         res.status(400).json({ message: error.message });
+//     }
+// });
+
+// Create a new category
 router.post('/', async (req, res) => {
-    const category = new Category(req.body);
     try {
+        
+        console.log("Request Body: ", req.body);
+
+        
+        const public_ids = req.body.public_ids ? 
+            (Array.isArray(req.body.public_ids) ? req.body.public_ids : JSON.parse(req.body.public_ids)) : [];
+
+        
+        const imageUrls = req.body.imageUrls ? 
+            (Array.isArray(req.body.imageUrls) ? req.body.imageUrls : JSON.parse(req.body.imageUrls)) : [];
+
+        
+        console.log("Parsed public_ids: ", public_ids);
+        console.log("Parsed imageUrls: ", imageUrls);
+
+        // Create a new category object with parsed data
+        const newCategoryData = {
+            ...req.body,
+            public_ids,  
+            imageUrls,   
+        };
+
+        
+        const category = new Category(newCategoryData);
+
+        
         const newCategory = await category.save();
+
+        
         res.status(201).json(newCategory);
     } catch (error) {
+        console.error("Error: ", error);
         res.status(400).json({ message: error.message });
     }
 });
+
 
 // Update a category
 router.put('/:id', async (req, res) => {
